@@ -21,42 +21,39 @@
       real,parameter :: GAMMA=G*RHO0 
       real,parameter :: BETA=4.4*10.0**(-10) 
 
-      integer,parameter :: NIDC=8
-      integer,parameter :: NROWIN=394
-      integer,parameter :: NCOLIN=730
-!     integer,parameter :: NLAYIN=138
-      integer,parameter :: NLAYIN=69
+	  integer,parameter :: NIDC=8
+	  integer,parameter :: NROWS=394
+	  integer,parameter :: NCOLS=730
+!	  integer,parameter :: nlayers=138
+      integer,parameter :: nlayers=69
 !     NTIMEIN=30  ! number of time steps
       integer,parameter :: NTIMEIN=30  ! number of time steps
       integer,parameter :: NUMUNITS=33
 	  
-      integer,parameter :: SUBROW=394
-      integer,parameter :: SUBCOL=730
-      integer,parameter :: STARTROW=1
-      integer,parameter :: ENDROW=394+2
-      integer,parameter :: STARTCOL=1
-      integer,parameter :: ENDCOL=730+2
-		  	  	   
-      integer,parameter :: NROW=NROWIN+2 
-      integer,parameter :: NCOLUMN=NCOLIN+2 
-      integer,parameter :: NLAYER=NLAYIN+2 
+	  integer,parameter :: SUBROW=394
+	  integer,parameter :: SUBCOL=730
+	  integer,parameter :: STARTROW=1
+	  integer,parameter :: ENDROW=394
+	  integer,parameter :: STARTCOL=1
+      integer,parameter :: ENDCOL=730
+      
+      integer,parameter :: xstart=2 	   
+      integer,parameter :: xrows=NROWS+2 
+	  integer,parameter :: xcols=NCOLS+2 
+      integer,parameter :: xlayers=nlayers+2 
 
-      integer,parameter :: ri = NROWIN+2		!row index
-      integer,parameter :: ci = NCOLIN+2		!col index
-      integer,parameter :: li = NLAYIN+2		!layer index
-
-      integer,parameter :: itmax=7999
-      integer,parameter :: start_itime=1        !mid-start
+	  integer,parameter :: itmax=7999
+	  integer,parameter :: start_itime=9    !mid-start
 	  
-      real,parameter :: EPSILON=0.1
-!     real,parameter :: EPSILON=100   !just for quick testing
-      real,parameter :: DXIN=50.0
+	  real,parameter :: EPSILON=0.2
+!	  real,parameter :: EPSILON=100   !just for quick testing
+	  real,parameter :: DXIN=50.0
       real,parameter :: DYIN=50.0 
-      real,parameter :: DZL=0.5
-!     real,parameter :: DZU=1
-!     real,parameter :: Z0=210
-      real,parameter :: Z0=208
-      real,parameter :: H0=228-10           !! lowest expected saturation elevation
+	  real,parameter :: DZL=1.0
+!	  real,parameter :: DZU=1
+!	  real,parameter :: Z0=210
+	  real,parameter :: Z0=208
+	  real,parameter :: H0=228-10           !! lowest expected saturation elevation
 	  
 !	   
 !  CONVERT GRID SPACING AND Z0 FROM M TO CM 
@@ -71,65 +68,67 @@
       real,parameter :: GAMMASI=9.8*10.0**3 
       real,parameter :: BETAP=BETA*GAMMASI/100.0 
 
-      integer,parameter :: IFIXP1=71
+	  integer,parameter :: IFIXP1=71
       integer,parameter :: JFIXP1=339
-      integer,parameter :: IFIXP2=124
-      integer,parameter :: JFIXP2=338
-      integer,parameter :: IFIXP3=252
-      integer,parameter :: JFIXP3=400
-      integer,parameter :: IFIXP4=103
-      integer,parameter :: JFIXP4=253
-      integer,parameter :: IFIXP5=270
-      integer,parameter :: JFIXP5=233
-      integer,parameter :: IFIXP6=146
-      integer,parameter :: JFIXP6=234
-      integer,parameter :: IFIXP7=50
-      integer,parameter :: JFIXP7=680
-      integer,parameter :: IFIXP8=94
+	  integer,parameter :: IFIXP2=124
+	  integer,parameter :: JFIXP2=338
+	  integer,parameter :: IFIXP3=252
+	  integer,parameter :: JFIXP3=400
+	  integer,parameter :: IFIXP4=103
+	  integer,parameter :: JFIXP4=253
+	  integer,parameter :: IFIXP5=270
+	  integer,parameter :: JFIXP5=233
+	  integer,parameter :: IFIXP6=146
+	  integer,parameter :: JFIXP6=234
+	  integer,parameter :: IFIXP7=50
+	  integer,parameter :: JFIXP7=680
+	  integer,parameter :: IFIXP8=94
       integer,parameter :: JFIXP8=85
-      integer,parameter :: IFIXP9=202
-      integer,parameter :: JFIXP9=470
-      integer,parameter :: IFIXP10=20
-      integer,parameter :: JFIXP10=300
+	  integer,parameter :: IFIXP9=202
+	  integer,parameter :: JFIXP9=470
+	  integer,parameter :: IFIXP10=20
+	  integer,parameter :: JFIXP10=300
 	  	  
 !!	  integer,dimension(610,461) :: KTOP,KBOT
 !!    real,dimension(610,461) :: ELEV
 
-      integer,allocatable,dimension(:,:) :: ktop,kbot,isoils
-      real,allocatable,dimension(:,:) :: elev
+	  integer,allocatable,dimension(:,:) :: ktop,kbot,isoils
+	  real,allocatable,dimension(:,:) :: elev
       
 !!      integer,dimension(610,461,123) :: IDCELL
 !!      real,dimension(610,461,123) :: QX,QY,QZ,PSI,H, PSIPRED,HIN,PSIIN,PSIOLD,PSIOLD2,PERM1,PERM2,PERM3,PERM4,PERM5,PERM6,COND
 
       integer,allocatable,dimension(:,:,:) :: IDCELL
-      real,allocatable,dimension(:,:,:) ::                                    &
-           QX,QY,QZ,PSI,H,PSIPRED,HIN,PSIIN,PSIOLD,PSIOLD2,PERM1,PERM2,PERM3,PERM4,PERM5,PERM6,COND
+      real,allocatable,dimension(:,:,:) :: QX,QY,QZ,PSI,H,PSIPRED,HIN,PSIIN,PSIOLD,PSIOLD2,PERM1,PERM2,PERM3,PERM4,PERM5,PERM6,COND
       real,allocatable,dimension(:,:) :: evin
       
-      real,dimension(nlayer) :: DELTAZ,Z,IXE,IXW,IYN,IYS
+      real,dimension(xlayers) :: DELTAZ,Z,IXE,IXW,IYN,IYS
       real,dimension(nidc) :: PRES,PA,ALPHA,POROS,PM,PN,HV 
+      
+      integer s_row,e_row,s_col,e_col
 
-    end module data_store
+	end module data_store
 
 ! ******************************************************************** 
 ! 
 !          MAIN PROGRAM 
 ! 
-    PROGRAM GW3D 
+      PROGRAM GW3D 
 ! 
       use data_store
-      real,DIMENSION(ri,ci,ntimein):: izt
-      REAL IZB
-      allocate (psiin(ri,ci,li))
-      allocate (psi(ri,ci,li))
-      allocate (psiold(ri,ci,li))
-      allocate (psiold2(ri,ci,li))
-      allocate (psipred(ri,ci,li))
-      allocate (h(ri,ci,li))
-      allocate (qx(ri,ci,li),qy(ri,ci,li),qz(ri,ci,li))
-      allocate (evin(ri,ci))
-
-! 
+	  real,DIMENSION(xrows,xcols,ntimein):: izt
+	  REAL IZB
+  	  integer ifullrun
+      allocate (psiin(xrows,xcols,xlayers))
+	  allocate (psi(xrows,xcols,xlayers))
+	  allocate (psiold(xrows,xcols,xlayers))
+	  allocate (psiold2(xrows,xcols,xlayers))
+	  allocate (psipred(xrows,xcols,xlayers))
+	  allocate (h(xrows,xcols,xlayers))
+	  allocate (qx(xrows,xcols,xlayers),qy(xrows,xcols,xlayers),qz(xrows,xcols,xlayers))
+	  allocate (evin(xrows,xcols))
+	  
+ 
 !      COMMON/G1/ KTOP(610,461),KBOT(610,461),IDCELL(610,461,123),ELEV(610,461)  
 !      COMMON/G2/ QX(610,461,123),QY(610,461,123),QZ(610,461,123),PSI(610,461,123),H(610,461,123) 
 !      COMMON/G3/ PSIPRED(610,461,123),PSIOLD(610,461,123),PSIOLD2(610,461,123),IXE(123),IXW(123),IYN(123),IYS(123),PERM1(610,461,123),PERM2(610,461,123),PERM3(610,461,123),PERM4(610,461,123),PERM5(610,461,123),PERM6(610,461,123) 
@@ -139,25 +138,25 @@
 !
 !APPEND
       OPEN(UNIT=50,FILE='PSI_PROFILES1_71_339.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=52,FILE='PSI_PROFILES2_124_338.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=53,FILE='PSI_PROFILES3_252_400.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=52,FILE='PSI_PROFILES2_124_338.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=53,FILE='PSI_PROFILES3_252_400.DAT',STATUS='UNKNOWN',position='append')
       OPEN(UNIT=54,FILE='PSI_PROFILES4_103_253.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=55,FILE='PSI_PROFILES5_270_233.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=70,FILE='PSI_PROFILES6_146_234.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=55,FILE='PSI_PROFILES5_270_233.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=70,FILE='PSI_PROFILES6_146_234.DAT',STATUS='UNKNOWN',position='append')
       OPEN(UNIT=71,FILE='PSI_PROFILES7_50_680.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=72,FILE='PSI_PROFILES8_94_85.DAT',STATUS='UNKNOWN',position='append')
-      OPEN(UNIT=73,FILE='PSI_PROFILES9_202_470.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=72,FILE='PSI_PROFILES8_94_85.DAT',STATUS='UNKNOWN',position='append')
+	  OPEN(UNIT=73,FILE='PSI_PROFILES9_202_470.DAT',STATUS='UNKNOWN',position='append')
       OPEN(UNIT=74,FILE='PSI_PROFILES10_20_300.DAT',STATUS='UNKNOWN',position='append')
 ! 
 !  INITIALIZE ARRAYS AND SET CONSTANTS 
 ! 
 ! 
       PSIIN=0.0 
-      PSIOLD=0.0 
-      PSIOLD2=0.0
-      PSIPRED=0.0 
+	  PSIOLD=0.0 
+	  PSIOLD2=0.0
+	  PSIPRED=0.0 
 
-      QX=0.0 
+	  QX=0.0 
       QY=0.0 
       QZ=0.0 
 ! 
@@ -173,18 +172,32 @@
 !!      IZT(ITIME)=0.0 
 !!   30 CONTINUE 
 
-      IZT=0.0 
+	  IZT=0.0 
+	  
+	  ifullrun=1
+	  if(ifullrun.eq.1)then
+	  s_row=xstart
+	  e_row=xrows-1
+	  s_col=xstart
+	  e_col=xcols-1
+	  else
+	  s_row=startrow
+	  e_row=endrow
+	  s_col=startcol
+	  e_col=endcol
+	  end if
+	  
 	  
 !
 !   SPECIFY RUN PARAMETERS
 !     INCODE(1)= STEADY-STATE HEADS; INCODE(2)=STEADY-STATE WATER TABLE
       INCODE=1
 !     IHDM = SURFACE FLUX DATA: 1=HOURLY 2=DAILY
-      IHDM=2
+	  IHDM=2
 !     DTHR= CALCULATION TIME-STEP (in hours)
-!     DTHR=0.5
-!     DTHR=6
+!	  DTHR=6
       DTHR=4
+!     DTHR=24  !for quick testing
 !
       CALL READIN(INCODE)
 !
@@ -193,7 +206,7 @@
 !
 !
       SSOPT=0.0
-      KKOUNT=1
+	  KKOUNT=1
 !
 !     OPEN(UNIT=51,FILE='..\input\INF_CM_Jan2011.DAT',STATUS='OLD')
 !     OPEN(UNIT=51,FILE='..\..\input\INF_CM_Mar2011_shortrun.DAT',STATUS='OLD')  
@@ -201,19 +214,19 @@
 !	  READ(51,*)(IZT(ITIME),ITIME=1,NTIMEIN) 
 
       do itime=1,NTIMEIN
-         READ(51,*)((IZT(I,J,ITIME),J=2,NCOLUMN-1),I=2,NROW-1)   !!unformatted read - kinda dangerous.
-!        do i=2,nrow-1
-!           do j=2,ncolumn-1
-!              if(izt(i,j,itime).gt.0.0)then
-!                 izt(i,j,itime)=2.55    !homogenous rain input
-!              end if
-!           end do
-!        end do
+      READ(51,*)((IZT(I,J,ITIME),J=2,xcols-1),I=2,xrows-1)   !!unformatted read - kinda dangerous.
+!     do i=2,nrow-1
+!     do j=2,ncolumn-1
+!     if(izt(i,j,itime).gt.0.0)then
+!     izt(i,j,itime)=2.55    !homogenous rain input
+!     end if
+!     end do
+!     end do
       end do
       
                  
-!   WRITE(6,2)(ITIME,IZT(ITIME),ITIME=1,NTIMEIN)   !!!
-2     FORMAT(I3,F7.1)
+! 	  WRITE(6,2)(ITIME,IZT(ITIME),ITIME=1,NTIMEIN)   !!!
+    2 FORMAT(I3,F7.1)
 !
 !  CONVERT THE SURFACE FLUX VALUES TO CM/S
 !
@@ -227,105 +240,105 @@
 !  100 CONTINUE
 
       IF(IHDM.EQ.1)THEN       !HOURLY
-         IZT=IZT/3600.0
+      IZT=IZT/3600.0
       ELSE
-         IZT=IZT/(24.0*3600.0)   !DAILY
+      IZT=IZT/(24.0*3600.0)   !DAILY
       ENDIF
 
 !
       IF(IHDM.EQ.1)THEN
-         NDT=1.0/DTHR
-         TIME=0.0
+      NDT=1.0/DTHR
+	  TIME=0.0
       ELSE
-         NDT=24.0/DTHR
-         TIME=0.0
+      NDT=24.0/DTHR
+	  TIME=0.0
       ENDIF
-      DTSEC=DTHR*3600.0
-      ITIME=start_itime
-!     ITIME=0       !mid-start
-      if(itime.eq.0)then
-         WRITE(50,3)ITIME,(PSIIN(IFIXP1,JFIXP1,K),K=NLAYER-1,2,-1)
-         WRITE(52,3)ITIME,(PSIIN(IFIXP2,JFIXP2,K),K=NLAYER-1,2,-1)
-         WRITE(53,3)ITIME,(PSIIN(IFIXP3,JFIXP3,K),K=NLAYER-1,2,-1)
-         WRITE(54,3)ITIME,(PSIIN(IFIXP4,JFIXP4,K),K=NLAYER-1,2,-1)
-         WRITE(55,3)ITIME,(PSIIN(IFIXP5,JFIXP5,K),K=NLAYER-1,2,-1)
-         WRITE(70,3)ITIME,(PSIIN(IFIXP6,JFIXP6,K),K=NLAYER-1,2,-1)
-         WRITE(71,3)ITIME,(PSIIN(IFIXP7,JFIXP7,K),K=NLAYER-1,2,-1)
-         WRITE(72,3)ITIME,(PSIIN(IFIXP8,JFIXP8,K),K=NLAYER-1,2,-1)
-         WRITE(73,3)ITIME,(PSIIN(IFIXP9,JFIXP9,K),K=NLAYER-1,2,-1)
-         WRITE(74,3)ITIME,(PSIIN(IFIXP10,JFIXP10,K),K=NLAYER-1,2,-1)
+	  DTSEC=DTHR*3600.0
+	  ITIME=start_itime
+!	  ITIME=0       !mid-start
+	  if(itime.eq.0)then
+	  WRITE(50,3)ITIME,(PSIIN(IFIXP1,JFIXP1,K),K=xlayers-1,2,-1)
+	  WRITE(52,3)ITIME,(PSIIN(IFIXP2,JFIXP2,K),K=xlayers-1,2,-1)
+	  WRITE(53,3)ITIME,(PSIIN(IFIXP3,JFIXP3,K),K=xlayers-1,2,-1)
+  	  WRITE(54,3)ITIME,(PSIIN(IFIXP4,JFIXP4,K),K=xlayers-1,2,-1)
+	  WRITE(55,3)ITIME,(PSIIN(IFIXP5,JFIXP5,K),K=xlayers-1,2,-1)
+	  WRITE(70,3)ITIME,(PSIIN(IFIXP6,JFIXP6,K),K=xlayers-1,2,-1)
+  	  WRITE(71,3)ITIME,(PSIIN(IFIXP7,JFIXP7,K),K=xlayers-1,2,-1)
+	  WRITE(72,3)ITIME,(PSIIN(IFIXP8,JFIXP8,K),K=xlayers-1,2,-1)
+	  WRITE(73,3)ITIME,(PSIIN(IFIXP9,JFIXP9,K),K=xlayers-1,2,-1)
+ 	  WRITE(74,3)ITIME,(PSIIN(IFIXP10,JFIXP10,K),K=xlayers-1,2,-1)
 
 !     (50) PSI_Profiles.dat
 !!    3 FORMAT(I3,63F7.1)         
-3        FORMAT(I3,<li>F7.1)  
-      end if
+	3 FORMAT(I3,<xlayers>F7.1)  
+	  end if     
 !
 !  INITIAL CONDITION FOR TRANSIENT SIMULATIONS: 
 !        PSI=PSIOLD=PSIOLD2=PSIPRED=PSIIN
 !
-      PSI=PSIIN
+	  PSI=PSIIN
       PSIPRED=PSIIN
       PSIOLD=PSIIN
       PSIOLD2=PSIIN
-      H=HIN
+	  H=HIN
 !
 !  TIME LOOP FOR TRANSIENT SIMULATIONS
 !
-      KOUNT=0
+	  KOUNT=0
       WRITE(6,*)'                           '
       WRITE(6,*)'  '
       WRITE(6,*)' <<<< ITERATING .....PLEASE WAIT....>>>>> '
 !
-      DO ITIME=start_itime,NTIMEIN     !mid-start
-         KOUNT=KOUNT+1
-         II=194			!! test prism
-         JJ=447			!! test prism
-         DO K=NLAYER-1,2,-1
-            WRITE(6,*)K,IDCELL(II,JJ,K),COND(II,JJ,K),PSI(II,JJ,K)
-         end do
-         WRITE(6,4)ITIME
-4        FORMAT(/,2X,'.......now in time step',i4,'......')
+      DO 200 ITIME=start_itime,NTIMEIN     !mid-start
+      KOUNT=KOUNT+1
+	  II=146			!! test prism
+	  JJ=234			!! test prism
+	  DO K=xlayers-1,2,-1
+	  WRITE(6,*)K,IDCELL(II,JJ,K),COND(II,JJ,K),PSI(II,JJ,K)
+	  end do
+      WRITE(6,4)ITIME
+    4 FORMAT(/,2X,'.......now in time step',i4,'......')
 !
 !  INNER TIME-LOOP PERTAINING TO CALCULATION TIME-STEP
 !
 !    go to 99    !!uncomment to check prisms before beginning
 
 
-         DO IDT=1,NDT
-            DELTAT9=DTSEC
-            DELTAT1=DELTAT9
-            TIME=TIME+DTHR
-            EVIN(:,:)=IZT(:,:,itime)  
+	  DO 210 IDT=1,NDT
+      DELTAT9=DTSEC
+      DELTAT1=DELTAT9
+      TIME=TIME+DTHR
+      EVIN(:,:)=IZT(:,:,itime)  
 !
 !  CALL ITERATION SUBROUTINE
 !
-            CALL ITERATE(IDT,DELTAT9,IZB,SSOPT,ITIME,DELTAT1,ICONVIT)
+     CALL ITERATE(IDT,DELTAT9,IZB,SSOPT,ITIME,DELTAT1,ICONVIT)
 !
-         ENDDO
+  210 CONTINUE
 !
-         IF(KOUNT.EQ.KKOUNT)THEN
+	 IF(KOUNT.EQ.KKOUNT)THEN
 !
 !  WRITE SELECTED RESULTS TO OUTPUT FILE
 !
-            WRITE(50,3)ITIME,(PSI(IFIXP1,JFIXP1,K),K=NLAYER-1,2,-1)
-            WRITE(52,3)ITIME,(PSI(IFIXP2,JFIXP2,K),K=NLAYER-1,2,-1)
-            WRITE(53,3)ITIME,(PSI(IFIXP3,JFIXP3,K),K=NLAYER-1,2,-1)
-            WRITE(54,3)ITIME,(PSI(IFIXP4,JFIXP4,K),K=NLAYER-1,2,-1)
-            WRITE(55,3)ITIME,(PSI(IFIXP5,JFIXP5,K),K=NLAYER-1,2,-1)
-            WRITE(70,3)ITIME,(PSI(IFIXP6,JFIXP6,K),K=NLAYER-1,2,-1)
-            WRITE(71,3)ITIME,(PSI(IFIXP7,JFIXP7,K),K=NLAYER-1,2,-1)
-            WRITE(72,3)ITIME,(PSI(IFIXP8,JFIXP8,K),K=NLAYER-1,2,-1)
-            WRITE(73,3)ITIME,(PSI(IFIXP9,JFIXP9,K),K=NLAYER-1,2,-1)
-            WRITE(74,3)ITIME,(PSI(IFIXP10,JFIXP10,K),K=NLAYER-1,2,-1)
+	  WRITE(50,3)ITIME,(PSI(IFIXP1,JFIXP1,K),K=xlayers-1,2,-1)
+	  WRITE(52,3)ITIME,(PSI(IFIXP2,JFIXP2,K),K=xlayers-1,2,-1)
+	  WRITE(53,3)ITIME,(PSI(IFIXP3,JFIXP3,K),K=xlayers-1,2,-1)
+  	  WRITE(54,3)ITIME,(PSI(IFIXP4,JFIXP4,K),K=xlayers-1,2,-1)
+	  WRITE(55,3)ITIME,(PSI(IFIXP5,JFIXP5,K),K=xlayers-1,2,-1)
+	  WRITE(70,3)ITIME,(PSI(IFIXP6,JFIXP6,K),K=xlayers-1,2,-1)
+  	  WRITE(71,3)ITIME,(PSI(IFIXP7,JFIXP7,K),K=xlayers-1,2,-1)
+	  WRITE(72,3)ITIME,(PSI(IFIXP8,JFIXP8,K),K=xlayers-1,2,-1)
+	  WRITE(73,3)ITIME,(PSI(IFIXP9,JFIXP9,K),K=xlayers-1,2,-1)
+ 	  WRITE(74,3)ITIME,(PSI(IFIXP10,JFIXP10,K),K=xlayers-1,2,-1)
 !     (50) PSI_PROFILES.DAT
  	  
-            call midwrite(itime)
+ 	  call midwrite(itime)
  	
-            KOUNT=0
-         ENDIF
+ 	  KOUNT=0
+	  ENDIF
 !
 !
-      ENDDO
+  200  CONTINUE
 !
 !
 !   PRINT SELECTED OUTPUT TO FILES
@@ -337,10 +350,10 @@
 ! 
 !   SCREEN PRINT OPTION 
 ! 
-99    WRITE (6,*) 'SPECIFY COORDINATES OF VERTICAL PRISM TO BE PRINTED' 
-      READ (5,*) II,JJ 
-      IF(II.EQ.999)GO TO 2000 
-      IF(II.GT.endROW.OR.JJ.GT.endCOL.OR.II.LT.startrow.OR.JJ.LT.startcol)GO TO 99 
+   99 WRITE (6,*) 'SPECIFY COORDINATES OF VERTICAL PRISM TO BE PRINTED' 
+	  READ (5,*) II,JJ 
+	  IF(II.EQ.999)GO TO 2000 
+	  IF(II.GT.e_row.OR.JJ.GT.e_col.OR.II.LT.s_row.OR.JJ.LT.s_col)GO TO 99 
 ! 
 	  WRITE (6,86)  
    86 FORMAT(//,10X,'*******************',//) 
@@ -348,7 +361,7 @@
 	  WRITE(6,*)KTOP(II,JJ),KBOT(II,JJ) 
 	  WRITE(6,86) 
  	  WRITE (6,*)'    K  IDC    COND         H       PSI         Z'      
-      DO 400 K=NLAYER-1,2,-1 
+      DO 400 K=xlayers-1,2,-1 
       WRITE (6,87) K,IDCELL(II,JJ,K),COND(II,JJ,K),(H(II,JJ,K)/100.0),PSI(II,JJ,K),(Z(K)/100.0),PSIOLD(II,JJ,K) 
   400 CONTINUE 
    87 FORMAT(2I5,2X,E8.2,4F10.2) 
@@ -373,13 +386,13 @@
 	  character*30 header
 	  integer val,inodata
 	  	  
-	  allocate (idcell(ri,ci,li))
-	  allocate (hin(ri,ci,li))
-	  allocate (cond(ri,ci,li))
-!	  allocate (ELEVM(ri,ci),HFIXED(ri,ci),IDSURF(ri,ci),IDFIX(ri,ci),IDCR(ri,ci),ELEVCR(ri,ci))
-	  allocate (ELEVM(ri,ci),HFIXED(ri,ci),IDSURF(ri,ci),IDFIX(ri,ci),ELEVCR(ri,ci))
-	  allocate (kbot(ri,ci),ktop(ri,ci),elev(ri,ci))
-	  allocate (isoils(ri,ci))
+	  allocate (idcell(xrows,xcols,xlayers))
+	  allocate (hin(xrows,xcols,xlayers))
+	  allocate (cond(xrows,xcols,xlayers))
+!	  allocate (ELEVM(xrows,xcols),HFIXED(xrows,xcols),IDSURF(xrows,xcols),IDFIX(xrows,xcols),IDCR(xrows,xcols),ELEVCR(xrows,xcols))
+	  allocate (ELEVM(xrows,xcols),HFIXED(xrows,xcols),IDSURF(xrows,xcols),IDFIX(xrows,xcols),ELEVCR(xrows,xcols))
+	  allocate (kbot(xrows,xcols),ktop(xrows,xcols),elev(xrows,xcols))
+	  allocate (isoils(xrows,xcols))
 	  
 ! 
 !!      COMMON/G1/ KTOP(610,461),KBOT(610,461),IDCELL(610,461,123)  
@@ -389,13 +402,15 @@
 !!      COMMON/G7/ COND(610,461,123) 
 ! 
 ! 
-    OPEN(UNIT=28,FILE='..\..\input\ht_strmel2k_2009may5.txt',STATUS='old') 
+    OPEN(UNIT=28,FILE='..\..\input\streamelev_elev_m_absvalue.txt',STATUS='old')
+!    OPEN(UNIT=28,FILE='..\..\input\ht_strmel2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=28,FILE='..\..\input\ht_net2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=29,FILE='..\input\ht_net2k_2009may5.txt',STATUS='old') 
-    OPEN(UNIT=29,FILE='..\..\input\ht_domain_id.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
+    OPEN(UNIT=29,FILE='..\..\input\ht_domain_id_elev_m.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
+!	OPEN(UNIT=29,FILE='..\..\input\ht_domain_id.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
 	OPEN(UNIT=31,FILE='IDMATRIX.TXT',STATUS='UNKNOWN') 
     OPEN(UNIT=32,FILE='ELEVDIF.DAT',STATUS='UNKNOWN') 
-	OPEN(UNIT=35,FILE='..\..\input\Ht6_conductivitiesLagroDetail_2011Aug16.txt',STATUS='old') 
+	OPEN(UNIT=35,FILE='..\..\input\Ht6_conductivitiesLagroDetail_2011Sept2.txt',STATUS='old') 
 	OPEN(UNIT=36,FILE='IDGROUND.DAT',STATUS='UNKNOWN') 
     OPEN(UNIT=37,FILE='ELEVATIONS_M.DAT',STATUS='UNKNOWN') 
 	OPEN(UNIT=39,FILE='ID_CHECK.DAT',STATUS='UNKNOWN') 
@@ -406,26 +421,26 @@
 ! 
 ! 
     1 FORMAT(4I4,2F5.0,I5,2F6.0,2F4.0) 
-    2 FORMAT(<ncolin>I3) 
-    3 FORMAT(<ncolin>F7.1) 
-    4 FORMAT(<ncolin>F7.2) 
-    5 FORMAT(<ncolin>f5.2) 
-    6 FORMAT(<ncolin>I6) 
-!    7 FORMAT(<ci>F7.2) 
-!    8 FORMAT(<ci>I2) 
-    7 FORMAT(<ncolin>F7.2) 
-    8 FORMAT(<ncolin>I3) 
-    9 FORMAT(<ncolin>F3.0) 
-    10 FORMAT(<ncolin>I2) 
+    2 FORMAT(<NCOLS>I3) 
+    3 FORMAT(<NCOLS>F7.1) 
+    4 FORMAT(<NCOLS>F7.2) 
+    5 FORMAT(<NCOLS>f5.2) 
+    6 FORMAT(<NCOLS>I6) 
+!    7 FORMAT(<NCOLS>F7.2) 
+!    8 FORMAT(<NCOLS>I2) 
+    7 FORMAT(<NCOLS>F7.2) 
+    8 FORMAT(<NCOLS>I3) 
+    9 FORMAT(<NCOLS>F3.0) 
+    10 FORMAT(<NCOLS>I2) 
 ! 
 !   READ THE NUMBERS OF COLUMNS, ROWS, LAYERS, AND MEDIA TYPES; DATUM, 
 !        ITERATION PARAMETERS, AND GRID SPACINGS 
 ! 
-!!      READ(30,*) NROWIN,NCOLIN,NLAYIN,NIDC,Z0,EPSILON,itmax,DX,DY,DZL,DZU 
-!!      WRITE(6,*)NROWIN,NCOLIN,NLAYIN,NIDC,Z0,EPSILON,ITMAX,DX,DY,DZL,DZU 
-!!      NCOLUMN=NCOLIN+2 
-!!      NROW=NROWIN+2 
-!!      NLAYER=NLAYIN+2 
+!!      READ(30,*) NROWS,NCOLS,xlayersS,NIDC,Z0,EPSILON,itmax,DX,DY,DZL,DZU 
+!!      WRITE(6,*)NROWS,NCOLS,xlayersS,NIDC,Z0,EPSILON,ITMAX,DX,DY,DZL,DZU 
+!!      NCOLUMN=NCOLS+2 
+!!      NROW=NROWS+2 
+!!      xlayers=xlayersS+2 
 !!	  H0=180.0 
 ! 
 !  INITIALIZE ARRAYS 
@@ -444,7 +459,7 @@
 ! 
 !  CONVERT GRID SPACING AND Z0 FROM M TO CM 
 ! 
-      DO 130 K=1,NLAYER 
+      DO 130 K=1,xlayers 
 !!	  IF(K.le.11)THEN 
 	  DELTAZ(K)=DZL*100.0 
 !!	  ELSE if(K.ge.12.and.K.le.84)then
@@ -457,9 +472,9 @@
 ! 
 !  READ NODE IDENTIFICATION CODES 
 ! 
-    DO 140 K=2,NLAYER-1	 
-    READ(35,2)((IDCELL(I,J,K),J=2,NCOLUMN-1),I=2,NROW-1) 
-	WRITE(31,2)((IDCELL(I,J,K),J=2,ncolumn-1),I=2,nrow-1)  
+    DO 140 K=2,xlayers-1	 
+    READ(35,2)((IDCELL(I,J,K),J=2,xcols-1),I=2,xrows-1) 
+	WRITE(31,2)((IDCELL(I,J,K),J=2,xcols-1),I=2,xrows-1)  
   140 CONTINUE  
 
  
@@ -468,18 +483,18 @@
 !  0 = outside subdomain, 1 = inside subdomain, 3 = stream cells (also inside subdomain) 
 !  SET ALL BUT ONE LAYER OF UNIT 2 (Trafalgar) TO 0    !!!!!!!!!!!!!!! Ht CUSTOMIZATION
 !
-     READ(29,10)((IDFIX(I,J),J=2,NCOLUMN-1),I=2,NROW-1)   
+     READ(29,10)((IDFIX(I,J),J=2,xcols-1),I=2,xrows-1)   
           
      close(unit=35,status='keep') 
                close(unit=29,status='keep') 
                
      read(135,*)header,val,header,val,header,val,header,val,header,val,header,inodata
-	 read(135,*)((isoils(i,j),J=2,NCOLUMN-1),I=2,NROW-1) 
+	 read(135,*)((isoils(i,j),J=2,xcols-1),I=2,xrows-1) 
 	 close(unit=135,status='keep')
 
 ! for first two layers of Huntertown GFM, substitute soils data (hydrologic group codes, 1-5, ABCD and water/wetland)	 
-	DO I=2,NROW-1 
-	DO J=2,NCOLUMN-1 
+	DO I=2,xrows-1 
+	DO J=2,xcols-1 
     if(ktop(i,j).gt.0)then
     do k=ktop(i,j)-1,ktop(i,j)
 	if(IDCELL(I,J,K).eq.6)IDCELL(I,J,K)=isoils(i,j)
@@ -491,19 +506,19 @@
 ! 
 !  MASK OUTSIDE AND BELOW SUBDOMAIN
 ! 
-	DO 150 I=2,NROW-1 
-	DO 150 J=2,NCOLUMN-1 
+	DO 150 I=2,xrows-1 
+	DO 150 J=2,xcols-1 
 	    IF(IDFIX(I,J).EQ.0)THEN 
-	    DO 155 K=2,NLAYER-1  
+	    DO 155 K=2,xlayers-1  
 	    IDCELL(I,J,K)=0 
 	    155 CONTINUE
 	    end if
     
 150 CONTINUE 
 
-    DO 151 I=2,NROW-1 
-	DO 151 J=2,NCOLUMN-1 
-	DO 151 K=2,NLAYER-1  
+    DO 151 I=2,xrows-1 
+	DO 151 J=2,xcols-1 
+	DO 151 K=2,xlayers-1  
 	IF(IDCELL(I,J,K).EQ.NUMUNITS.AND.IDCELL(I,J,K+1).EQ.NUMUNITS)THEN 
 	    IDCELL(I,J,K)=0 
 	ENDIF 
@@ -512,17 +527,17 @@
 ! 
 !  FIND TOP AND BOTTOM OF EACH VERTICAL PRISM 
 ! 
-	DO 160 I=startrow,endrow
-    DO 160 J=startcol,endcol 
-!   DO 170 K=1,NLAYER 
+	DO 160 I=s_row,e_row
+    DO 160 J=s_col,e_col 
+!   DO 170 K=1,xlayers 
 ! 
 !  OPTION TO SET BOUNDARIES AS FIXED HEADS 
 !      IF(I.EQ.2.OR.J.EQ.2.AND.IDCELL(I,J,K).EQ.2)IDCELL(I,J,K)= 
 !     &-IDCELL(I,J,K) 
-!      IF(I.EQ.NROW-1.OR.J.EQ.NCOLUMN-1.AND.IDCELL(I,J,K).EQ.2) 
+!      IF(I.EQ.xrows-1.OR.J.EQ.xcols-1.AND.IDCELL(I,J,K).EQ.2) 
 !     &IDCELL(I,J,K)=-IDCELL(I,J,K) 
 !  170 CONTINUE 
-    DO 180 K=2,NLAYER-1 
+    DO 180 K=2,xlayers-1 
 	IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)THEN 
 	KBOT(I,J)=K 
 	ENDIF 
@@ -604,10 +619,10 @@
 !  READ INPUT HYDRAULIC HEAD VALUES (TRANSIENT SIMULATIONS ONLY) 
 ! 
       IF(INCODE.EQ.1)THEN 
- 	  OPEN(UNIT=38, FILE='..\..\input\SSOUT_H_24aug2011.DAT', STATUS='OLD') 
-! 	  OPEN(UNIT=38, FILE='..\..\input\OUTHEADS_MID.DAT',STATUS='OLD')   !mid-start
-      DO 200 K=2,NLAYER-1 
-      READ(38,4)((HIN(I,J,K),J=2,NCOLUMN-1),I=2,NROW-1) 
+! 	  OPEN(UNIT=38, FILE='..\..\input\SSOUT_H_25aug2011.DAT', STATUS='OLD') 
+ 	  OPEN(UNIT=38, FILE='..\..\input\OUTHEADS_MID.DAT',STATUS='OLD')   !mid-start
+      DO 200 K=2,xlayers-1 
+      READ(38,4)((HIN(I,J,K),J=2,xcols-1),I=2,xrows-1) 
   200 CONTINUE 
 !    4 FORMAT(254F7.0) 
       ENDIF 
@@ -617,21 +632,21 @@
 !  INITIALIZE HEADS, IN M, FOR STEADY STATE SIMULATIONS 
 ! 
       IF(INCODE.EQ.0)THEN 
-      DO 210 I=1,NROW 
-	  DO 210 J=1,NCOLUMN 
-	  DO 210 K=1,NLAYER 
+      DO 210 I=1,xrows 
+	  DO 210 J=1,xcols 
+	  DO 210 K=1,xlayers 
 	  HIN(I,J,K)=H0 
   210 CONTINUE 
       ENDIF 
       
 !  CONVERT INPUT HEAD VALUES FROM M (OR FT) TO CM 
 ! 
-      DO 220 I=startrow,endrow
-      DO 220 J=startcol,endcol 
-      DO 220 K=1,NLAYER  
-!      DO 220 I=1,NROW 
-!      DO 220 J=1,NCOLUMN 
-!      DO 220 K=1,NLAYER 
+      DO 220 I=s_row,e_row
+      DO 220 J=s_col,e_col 
+      DO 220 K=1,xlayers  
+!      DO 220 I=1,xrows 
+!      DO 220 J=1,xcols 
+!      DO 220 K=1,xlayers 
       IF(IDCELL(I,J,K).EQ.0)THEN 
 	  HIN(I,J,K)=0.0 
 	  ELSE 
@@ -648,39 +663,39 @@
 !           
       Z(1)=Z0*100.0 
 	  ZSUM=Z(1) 
-      DO 300 K=2,NLAYER 
+      DO 300 K=2,xlayers 
       Z(K)=ZSUM+((DELTAZ(K-1)/2.0)+(DELTAZ(K)/2.0)) 
 	  ZSUM=Z(K) 
   300 CONTINUE 
 !
 	  ELEV=0.0 
 	  ELEVM=0.0 
-      DO 310 I=startrow,endrow 
-      DO 310 J=startcol,endcol 
-      DO 320 K=2,NLAYER 
+      DO 310 I=s_row,e_row 
+      DO 310 J=s_col,e_col 
+      DO 320 K=2,xlayers 
 	  IF(IDCELL(I,J,K).NE.0)THEN 
 	  PSIIN(I,J,K)=HIN(I,J,K)-Z(K) 
       ENDIF 
   320 CONTINUE 
   310 CONTINUE 
 !
-      DO 330 I=startrow,endrow
-	  DO 330 J=startcol,endcol
+      DO 330 I=s_row,e_row
+	  DO 330 J=s_col,e_col
 	  IF(KTOP(I,J).GT.0)THEN
       KT=KTOP(I,J)
       ELEV(I,J)=Z(KT) 
 	  ELEVM(I,J)=ELEV(I,J)/100.0
 	  ENDIF
   330 CONTINUE 
-!      write(37,77)((elevm(i,j),j=2,ncolumn-1),i=2,nrow-1)
-!   77 format(<ncolin>f4.0)
-!      stop
+ !      write(37,77)((elevm(i,j),j=2,xcols-1),i=2,xrows-1)
+ !   77 format(<NCOLS>f7.1)
+ !      stop
 ! 
 !    SET HEADS OF LAKE BOUNDARY CELLS = 175.5 M 
 ! 
 !      HLAKE=175.5*100.0 
-!	  DO 340 I=1,NROW 
-!      DO 340 J=1,NCOLUMN 
+!	  DO 340 I=1,xrows 
+!      DO 340 J=1,xcols 
 !	  IF(KTOP(I,J).NE.0)THEN 
 !	  IF(IDFIX(I,J).EQ.0.AND.IDFIX(I,J-1).EQ.2)THEN 
 !	  KT=KTOP(I,J) 
@@ -697,11 +712,11 @@
 !  READ ARRAYS THAT DEFINES CREEK LOCATIONS AND ELEVATIONS 
 !       SET FIXED HEADS=ELEV AT THOSE LOCATIONS  
 ! 
-!     READ(29,*)((IDCR(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
-	  READ(28,*)((ELEVCR(I,J),J=2,NCOLUMN-1),I=2,NROW-1)    !unformatted read, variable precision
+!     READ(29,*)((IDCR(I,J),J=2,xcols-1),I=2,xrows-1) 
+	  READ(28,*)((ELEVCR(I,J),J=2,xcols-1),I=2,xrows-1)    !unformatted read, variable precision
 ! 
-      DO 350 I=startrow,endrow
-	  DO 350 J=startcol,endcol 
+      DO 350 I=s_row,e_row
+	  DO 350 J=s_col,e_col 
 !	  IF(IDCR(I,J).NE.0)THEN 
       IF(IDFIX(I,J).EQ.3)THEN 
 !      write(6,*)'creek cell ',i,j 
@@ -714,12 +729,13 @@
 !	  KT2=KB
 !	  ENDIF
 !	  IF(KT.LT.25)KT2=KT
-	    IF(KB.EQ.0.OR.KT.EQ.0)THEN
-	    WRITE(6,*)'NO KT OR KB',I,J
-	    GO TO 350
-	    ENDIF 
+	  IF(KB.EQ.0.OR.KT.EQ.0)THEN
+	  WRITE(6,*)'NO KT OR KB',I,J
+	  GO TO 350
+	  ENDIF 
 	  DO 360 K=KB,KT 
-	  HIN(I,J,K)=ELEVCR(I,J)*100.0 
+!	  HIN(I,J,K)=ELEVCR(I,J)*100.0 
+      HIN(I,J,K)=ELEVM(I,J)*100
 	  PSIIN(I,J,K)=HIN(I,J,K)-Z(K) 
 !	  IDCELL(I,J,K)=-IDCELL(I,J,K) 
   360 CONTINUE
@@ -734,17 +750,17 @@
 ! 
 !  READ HYDRAULIC CONDUCTIVITY/UNIT CODES  
 ! 
-!      DO 400 K=2,NLAYER-1 
-!	  READ (35,9) ((COND10(I,J,K),J=2,NCOLUMN-1),I=2,NROW-1) 
+!      DO 400 K=2,xlayers-1 
+!	  READ (35,9) ((COND10(I,J,K),J=2,xcols-1),I=2,xrows-1) 
 !  400 CONTINUE 
 ! 
 ! 
 !   CALCULATE HYDRAULIC CONDUCTIVITIES BASED ON CONDUCTIVITY CODES AND 
 !  RE-DEFINE MATERIAL (ID) CODES BASED ON THE INPUT CONDUCTIVITY CODES 
 ! 
-	  DO I=startrow,endrow
-	  DO J=startcol,endcol
-	  DO K=1,NLAYER 
+	  DO I=s_row,e_row
+	  DO J=s_col,e_col
+	  DO K=1,xlayers 
       IF(IDCELL(I,J,K).NE.0)THEN 
  
 !     IF (COND10(I,J,K).NE.0.0) THEN 
@@ -813,13 +829,13 @@
 	  IF(KOND.EQ.4)COND(I,J,K)=1.0*10.0**(-6)
 	  IF(KOND.EQ.6.or.KOND.EQ.8.or.KOND.EQ.10)COND(I,J,K)=7.5*10.0**(-8)
 	  if(IDCELL(I,J,K).LT.0.and.k.ge.ktop(i,j)-6)then 
-	  IDCELL(I,J,K)=-7 
+	  IDCELL(I,J,K)=-7 !fractured till, if in upper till 6 or less layers/meters (layering begins at the bottom)
 	  else if(IDCELL(I,J,K).ge.0.and.k.ge.ktop(i,j)-6)then
-      IDCELL(I,J,K)=7
+      IDCELL(I,J,K)=7  !fractured till, if in upper till 6 or less layers/meters (layering begins at the bottom)
 	  else if(IDCELL(I,J,K).LT.0.and.k.lt.ktop(i,j)-6)then 
-	  IDCELL(I,J,K)=-8
+	  IDCELL(I,J,K)=-8 !unfractured "regular" till, if in upper till more than 6 layers/meters (layering begins at the bottom)
 	  else if(IDCELL(I,J,K).ge.0.and.k.lt.ktop(i,j)-6)then
-      IDCELL(I,J,K)=8
+      IDCELL(I,J,K)=8  !unfractured "regular" till, if in upper till more than 6 layers/meters (layering begins at the bottom)
 	  end if 
 
       case default  
@@ -833,17 +849,17 @@
 	  end do 
 	  end do 
  
-!     DO 650 I=1,NROW 
-!	  DO 650 J=1,NCOLUMN 
-!	  DO 650 K=1,NLAYER 
+!     DO 650 I=1,xrows 
+!	  DO 650 J=1,xcols 
+!	  DO 650 K=1,xlayers 
 !	  IF(IDCELL(I,J,K).NE.0.AND.COND(I,J,K).EQ.0.0)WRITE(6,*)I,J,K,COND10(I,J,K) 
 !  650 CONTINUE 
 ! 
 ! 
 !  CHECK FOR PROBLEMS WITH ELEVATION ASSIGNMENTS
 ! 
-      DO 410 I=startrow,endrow 
-	  DO 410 J=startcol,endcol 
+      DO 410 I=s_row,e_row 
+	  DO 410 J=s_col,e_col
 	  IF(ELEVCR(I,J).GT.0.0)THEN
 	  ELEVDIF=ELEVCR(I,J)-ELEVM(I,J)
 	  AELEVD=ABS(ELEVDIF)
@@ -864,15 +880,15 @@
 ! 
 !  PRINT OUTPUT FILES FOR CHECKING AND ADJUSTING 
 ! 
-	  DO 460 K=1,NLAYER 
-	  WRITE(39,8)((IDCELL(I,J,K),J=2,NCOLUMN-1),I=2,NROW-1) 
+	  DO 460 K=1,xlayers 
+	  WRITE(39,8)((IDCELL(I,J,K),J=2,xcols-1),I=2,xrows-1) 
   460 CONTINUE 
 ! 
-      DO 470 I=1,NROW 
-	  DO 470 J=1,NCOLUMN 
+      DO 470 I=1,xrows 
+	  DO 470 J=1,xcols 
 	  IDSURF(I,J)=0 
 	  IF(KTOP(I,J).NE.0)THEN 
-	  DO 480 K=2,NLAYER-1 
+	  DO 480 K=2,xlayers-1 
 	  IF(K.EQ.KTOP(I,J))THEN 
 	  IDSURF(I,J)=IDCELL(I,J,K) 
 	  ENDIF 
@@ -880,10 +896,10 @@
       ENDIF 
   470 CONTINUE 
 ! 
-      WRITE(36,8)((IDSURF(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
+      WRITE(36,8)((IDSURF(I,J),J=2,xcols-1),I=2,xrows-1) 
 ! 
-      DO 490 I=1,NROW 
-	  DO 490 J=1,NCOLUMN 
+      DO 490 I=1,xrows 
+	  DO 490 J=1,xcols 
 	  IF(KTOP(I,J).GT.0.AND.ELEVM(I,J).EQ.0.0)THEN
 	  KT=KTOP(I,J)
 	  ELEVM(I,J)=Z(KT)/100.0
@@ -894,8 +910,8 @@
 	  ENDIF 
   490 CONTINUE 
 ! 
-      WRITE(37,77)((ELEVM(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
-   77 FORMAT(<ncolin>F7.1)    
+      WRITE(37,76)((ELEVM(I,J),J=2,xcols-1),I=2,xrows-1) 
+   76 FORMAT(<NCOLS>F7.1)    
 
 !!	  deallocate(ELEVM,HFIXED,IDSURF,IDFIX,IDCR,ELEVCR)
       deallocate(ELEVM,HFIXED,IDSURF,IDFIX,ELEVCR)
@@ -924,9 +940,9 @@
 	  real,allocatable,dimension(:,:,:) :: PSIOLDI,PSIPOLD
 !	  real,allocatable,dimension(:,:) :: EVIN
 	  
-	  allocate (psioldi(ri,ci,li),psipold(ri,ci,li)) 
-	  allocate (perm1(ri,ci,li),perm2(ri,ci,li),perm3(ri,ci,li),perm4(ri,ci,li),perm5(ri,ci,li),perm6(ri,ci,li))
-!	  allocate (evin(ri,ci))
+	  allocate (psioldi(xrows,xcols,xlayers),psipold(xrows,xcols,xlayers)) 
+	  allocate (perm1(xrows,xcols,xlayers),perm2(xrows,xcols,xlayers),perm3(xrows,xcols,xlayers),perm4(xrows,xcols,xlayers),perm5(xrows,xcols,xlayers),perm6(xrows,xcols,xlayers))
+!	  allocate (evin(xrows,xcols))
 ! 
 
 !!      COMMON/G1/ KTOP(610,461),KBOT(610,461),IDCELL(610,461,123),ELEV(610,461)  
@@ -950,22 +966,38 @@
 	  OPEN(UNIT=60,FILE='iter_log.dat',status='unknown',position='append') 
 !	WRITE(6,*)'IN ITERATE' 
 ! 
+
+! RELAXATION PARAMETER:  under-relax (0<OMEGA<1), over-relax (1<OMEGA<2)
+
       KKNT=0 
       ITER=0 
 	  EPSI=EPSILON 
       DT=DELTAT9 
       LAMBDA=0.0 
+      FAIL = 0; NEXTRA = 50; EASIER = 100.0; T1 = NEXTRA
       IF(SSOPT.EQ.1.0)THEN 
 	  OMEGA=1.88
       ELSE 
+!     OMEGA=0.6
 	  OMEGA=0.8
-!	  OMEGA=1.2
       ENDIF 
-! 
-!  COMPUTE VARIABLE TIME-STEP COEFFICIENT USED IN CALCULATION 
-!          OF PSIPRED:  FREEZE(71, EQ 12) 
-! 
-      T=DT/(DELTAT1*2.0) 
+    
+        E1 = EPSILON + 0.01
+        RATIO = (E1-EPSILON)/(EASIER-EPSILON)
+        COEF = ALOG(RATIO)/T1
+        
+    GO TO 105
+
+801 do 800 TEXTRA=1,NEXTRA
+        ITER = 0
+        EPSI = EPSILON + (EASIER - EPSILON)*EXP(COEF*TEXTRA)
+
+!  COMPUTE VARIABLE TIME-STEP COEFFICIENT USED IN CALCULATION OF PSIPRED:  
+!  FREEZE(71, EQ 12) 
+
+105     T = DT/(DELTAT1*2.0) 
+
+     
 ! 
 !  INITIALIZE ITERATION BY SETTING PSIPOLD AND PSIOLDI 
 !     (SEE  EQN 13 IN FREEZE, 1971) EQUAL TO ZERO 
@@ -975,9 +1007,9 @@
 !         PSIOLDI= PSI IN PREVIOUS ITERATION = 0 IN 1ST ITERATION 
 !         PSIPRED= PREDICTED PSI VALUE; SEE EQN'S BELOW 
 !   
-!!       DO 100 I=2,NROW-1 
-!!       DO 100 J=2,NCOLUMN-1 
-!!       DO 100 K=2,NLAYER-1 
+!!       DO 100 I=2,xrows-1 
+!!       DO 100 J=2,xcols-1 
+!!       DO 100 K=2,xlayers-1 
 !!       PSIPOLD(I,J,K)=0.0 
 !!       PSIOLDI(I,J,K)=0.0   
 !!  100 CONTINUE 
@@ -995,12 +1027,12 @@
 ! 
 !  OUTER DO-LOOPS FOR CYCLING THROUGH ALL PRISMS IN HORIZONTAL MESH 
 ! 
-      DO 200 I=startrow,endrow 
-      DO 210 J=startcol,endcol 
+      DO 200 I=s_row,e_row 
+      DO 210 J=s_col,e_col 
 ! 
 !  INNER DO-LOOP CYCLES THROUGH ALL NODES OF VERTICAL PRISM 
 ! 
-      DO 220 K=2,NLAYER-1 
+      DO 220 K=2,xlayers-1 
 ! 
 !  CHECK CELL STATUS AND SKIP PAST CONSTANT HEAD NODES 
 ! 
@@ -1246,11 +1278,12 @@
 ! 
       PSI(I,J,K)=OMEGA*PSI(I,J,K)+(1.0-OMEGA)*PSIOLDI(I,J,K) 
 	  if(psi(i,j,k).lt.-1000.0)psi(i,j,k)=-1000
-!
+
+!  If you are at the surface and PSI is positive (ground fully saturated), set PSI = 0.1
       IF(K.NE.KTOP(I,J))GO TO 155 
 	  PSICHK=PSI(I,J,K)+Z(K) 
 	  IF(PSICHK.GT.Z(K))THEN 
-	  PSI(I,J,K)=1.0
+	  PSI(I,J,K)=0.1
 	  ENDIF  
 ! 
 !  CHECK FOR DEVELOPMENT OF SEEPAGE FACES  
@@ -1298,97 +1331,228 @@
 ! 
 ! 
 !  CHECK FOR CONVERGENCE THEN ITERATE OR CYCLE AS APPROPRIATE 
+
+!        SFLUXDAY = EVIN*3600.0*24.0
+!!  Temporarily commented out print to screen on July 28th 2010        
+!    write(6,4)ITIME,IDT,ITER,DIFMAX,(IBAD-1),(JBAD-1),(KBAD-1)
+!    write(6,8)PSI(IBAD,JBAD,KBAD),PSIOLDI(IBAD,JBAD,KBAD)
+!
+!1   format(1X,'T = ',I3,'(',I3,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,          &
+!        &  'EVIN =',E6.2,2X,'# OF SEEPS =',I5)
+!4   format(1X,'T = ',I3,'(',I3,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,/,6X,     &
+!        &  '(TRUE nrow, ncol, nlayer) of max difference = ',3I4)
+!8   format(1X,'PSI = ',F10.4,6X,'PSIOLDI = ',F10.4,/) 
+!
+!        if(DIFMAX.GT.EPSI)GO TO 1000
+!        ICONVIT = ITER 
+!        write(6,2)ITIME,IDT,ICONVIT,KSEEP,SFLUXDAY
+!        write(60,2)ITIME,IDT,ICONVIT,KSEEP,SFLUXDAY
+!2   format(1X,'TIME-STEP # ',I2,'(',I3,')',4X,'CONVERGENCE ACHIEVED IN ',I5,            &
+!        &  ' ITERATIONS',/,5X,'# OF SEEPS =',I5,5X,'Surface flux for this day is ',F6.2) 
+!
+!    if(DIFMAX.LT.EPSI.AND.FAIL.EQ.0)GO TO 1010
+!    GO TO 1012
+
+
+
 ! 
 !        
 !	IF(SSOPT.EQ.1.0)THEN
       XIZT=evin(194,447)*3600.0*24.0   !sflux for test prism
-	  WRITE(6,1)ITIME,IDT,ITER,DIFMAX,XIZT,KSEEP 
-	  WRITE(60,1)ITIME,IDT,ITER,DIFMAX,XIZT,KSEEP 
+      
+    write(6,4)ITIME,IDT,ITER,DIFMAX,(IBAD-1),(JBAD-1),(KBAD-1)
+    write(6,8)PSI(IBAD,JBAD,KBAD),PSIOLDI(IBAD,JBAD,KBAD)
+
+1   format(1X,'T = ',I3,'(',I3,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,          &
+        &  'EVIN =',E6.2,2X,'# OF SEEPS =',I10)
+4   format(1X,'T = ',I3,'(',I3,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,/,6X,     &
+        &  '(TRUE nrow, ncol, nlayer) of max difference = ',3I4)
+8   format(1X,'PSI = ',F10.4,6X,'PSIOLDI = ',F10.4,/) 
+
+        if(DIFMAX.GT.EPSI)GO TO 1000
+        ICONVIT = ITER 
+     
+	  WRITE(6,2)ITIME,IDT,ITER,DIFMAX,XIZT,KSEEP 
+	  WRITE(60,2)ITIME,IDT,ITER,DIFMAX,XIZT,KSEEP 
 !	  WRITE(6,*) IBAD,JBAD,KBAD,PSI(IBAD,JBAD,KBAD) 
 !    &,PSIOLDI(IBAD,JBAD,KBAD) 
 !     ENDIF 
-    1 FORMAT(1X,'T = ',I3,'(',I2,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,'IZT =',F5.2,2X,'# OF SEEPS =',I5) 
+!!    1 FORMAT(1X,'T = ',I3,'(',I2,')',2X,'ITERATION #',I4,2X,'DIFMAX =',F10.4,2X,'IZT =',F5.2,2X,'# OF SEEPS =',I5) 
 !     IF(DIFMAX.LE.EPSI.OR.ITER.EQ.ITMAX-1)THEN 
 !	  KICKOUT=1 
 !	  ENDIF 
-! 1000 continue		!Greg - check this continue location		 
+! 1000 continue		!Greg - check this continue location	
 ! 
-      IF(DIFMAX.GT.EPSI.AND.ITER.LT.ITMAX)GO TO 1000 
-      ICONVIT=ITER 
-      WRITE(6,2)ITIME,IDT,ICONVIT,DIFMAX,KSEEP 
-	  WRITE(60,2)ITIME,IDT,ICONVIT,DIFMAX,KSEEP 
-    2 FORMAT(1X,'TIME-STEP # ',I3,'(',I2,')',4X,'CONVERGENCE ACHIEVED IN ',I5,' ITERATIONS',5X,'DIFMAX = ',F10.2,4X,'# OF SEEPS =',I5) 
+
+2   format(1X,'TIME-STEP # ',I2,'(',I3,')',4X,'CONVERGENCE ACHIEVED IN ',I5,            &
+        &  ' ITERATIONS',/,5X,'# OF SEEPS =',I10,5X,'Surface flux for this day is ',F6.2) 
+
+    if(DIFMAX.LT.EPSI.AND.FAIL.EQ.0)GO TO 1010
+    GO TO 1012
+
+1010 ICONVIT = ITER
+
+!     IF(DIFMAX.GT.EPSI.AND.ITER.LT.ITMAX)GO TO 1000 
+!     ICONVIT=ITER 
+!     WRITE(6,2)ITIME,IDT,ICONVIT,DIFMAX,KSEEP 
+!	  WRITE(60,2)ITIME,IDT,ICONVIT,DIFMAX,KSEEP 
+!   2 FORMAT(1X,'TIME-STEP # ',I3,'(',I2,')',4X,'CONVERGENCE ACHIEVED IN ',I5,' ITERATIONS',5X,'DIFMAX = ',F10.2,4X,'# OF SEEPS =',I5) 
  
-! 
-! 
-!  RECOMPUTE HYDRAULIC HEAD VALUES THEN UPDATE BY SETTING PSIOLD2=PSIOLD 
-!                              AND PSIOLD=PSI 
-! 
-      DO 300 I=startrow,endrow 
-      DO 300 J=startcol,endcol 
-      DO 300 K=2,NLAYER-1 
-      IF(IDCELL(I,J,K) .NE. 0)THEN 
-      H(I,J,K)=Z(K)+PSI(I,J,K) 
-      PSIOLD2(I,J,K)=PSIOLD(I,J,K) 
-      PSIOLD(I,J,K)=PSI(I,J,K) 
-      ENDIF 
-  300 CONTINUE 
+
+!  RECOMPUTE HYDRAULIC HEAD VALUES then UPDATE BY SETTING PSIOLD2=PSIOLD AND PSIOLD=PSI 
+
+!  Freeze suggests a change in PSI value for a given time-step should not exceed 10 cm
+!  if so, consider decreasing time-step.  
+!  psitdif and psitdifmax will be used to track this.
+1012 psitdifmax = 0.0
+    do i=2,xrows-1; do j=2,xcols-1; do k=2,xlayers-1 
+        psitdif = abs(PSI(I,J,K) - PSIOLD(I,J,K))
+        if(psitdif > psitdifmax)then
+            psitdifmax = psitdif; ibadt = i; jbadt = j; kbadt = k
+        end if
+        if(IDCELL(I,J,K).NE.0)then 
+            H(I,J,K) = Z(K) + PSI(I,J,K) 
+            PSIOLD2(I,J,K) = PSIOLD(I,J,K) 
+            PSIOLD(I,J,K) = PSI(I,J,K) 
+        endif
+    end do; end do; end do
+    
+    write(6,7)PSIOLD2(ibadt,jbadt,kbadt),PSI(ibadt,jbadt,kbadt),psitdifmax,(ibadt-1),   &
+        &     (jbadt-1),(kbadt-1)
+    write(60,7)PSIOLD2(ibadt,jbadt,kbadt),PSI(ibadt,jbadt,kbadt),psitdifmax,(ibadt-1),  &
+        &     (jbadt-1),(kbadt-1)
+7   format(8X,'PSIOLD = ',F9.1,4X,'PSI = ',F9.1,/,9X,                                   &
+        &     'Maximum change in PSI (cm) between time-step = ',F9.1,/,10X,             &
+        &     '(TRUE nrow, ncol, nlayer) of max difference = ',3I4,//)
+
+    if(FAIL.EQ.1)GO TO 802
+
+!! 
+!! 
+!!  RECOMPUTE HYDRAULIC HEAD VALUES THEN UPDATE BY SETTING PSIOLD2=PSIOLD 
+!!                              AND PSIOLD=PSI 
+!! 
+!      DO 300 I=s_row,e_row 
+!      DO 300 J=s_col,e_col
+!      DO 300 K=2,xlayers-1 
+!      IF(IDCELL(I,J,K) .NE. 0)THEN 
+!      H(I,J,K)=Z(K)+PSI(I,J,K) 
+!      PSIOLD2(I,J,K)=PSIOLD(I,J,K) 
+!      PSIOLD(I,J,K)=PSI(I,J,K) 
+!      ENDIF 
+!  300 CONTINUE 
 ! 
 !   CALCULATE FLOW COMPONENTS IN CM/DAY 
 ! 
-      DO 400 K=NLAYER-1,2,-1 
-      DO 410 I=endrow,startrow,-1 
-      DO 420 J=endcol,startcol,-1 
-! 
-!   QZ FOR SURFACE CELL 
-	  if (idcell(i,j,k).ne.0.and.idcell(i,j,k+1).eq.0) then 
-!     write(6,*)i,j,k
-	  QZ(I,J,K)=-EVIN(i,j)*86400.0 
+!      DO 420 K=xlayers-1,2,-1 
+!      DO 420 I=e_row,s_row,-1 
+!      DO 420 J=e_col,s_col,-1 
+!! 
+!!   QZ FOR SURFACE CELL 
+!	  if (idcell(i,j,k).ne.0.and.idcell(i,j,k+1).eq.0) then 
+!!     write(6,*)i,j,k
+!	  QZ(I,J,K)=-EVIN(i,j)*86400.0 
+!	  QX(i,j,k)=0.0 
+!	  QY(i,j,k)=0.0 
+!	  GO TO 420 
+!	  ENDIF 
+!! 
+!!  	QZ FOR INTERNAL CELL 
+!      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).NE.0)THEN 
+!      QZ(I,J,K)=((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I,J,K-1))/DELTAZ(K)))*86400.0 
+!      ENDIF 
+!! 
+!!   QZ FOR BOTTOM CELL	 
+!      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)THEN 
+!      QZ(I,J,K)=((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K+1)-H(I,J,K))/DELTAZ(K)))*86400.0 
+!      ENDIF 
+!! 
+!!   QX AND QY FOR INTERNAL CELL	OR EAST (RIGHT) BOUNDARY OR NORTH (TOP) BOUNDARY 
+!      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).GT.0.AND.IDCELL(I,J-1,K).GT.0)THEN	 
+!      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J,K)-H(I,J-1,K))/DX)*86400.0 
+!      QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I-1,J,K))/DY))*86400.0 
+!	  ENDIF 
+!! 
+!!   QX FOR CELL ADJACENT TO FIXED HEAD 
+!	  IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I,J+1,K).LT.0)THEN 
+!      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0 									  
+!      ENDIF 
+!! 
+!!   QY FOR CELL ADJACENT TO FIXED HEAD 
+!	  IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I+1,J,K).LT.0)THEN  
+!      QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0 
+!	  ENDIF 
+!! 
+!!     QX FOR WEST (LEFT) BOUNDARY 
+!      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J-1,K).EQ.0)THEN 
+!      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0 
+!      ENDIF 
+!! 
+!!     QY FOR SOUTH (LOWER) BOUNDARY  
+!      IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).EQ.0)THEN 
+!	  QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0 
+!      ENDIF 
+!! 
+!      end do 
+!      end do    	 
+!      end do   
+!!      ENDIF 
+
+!  CALCULATE FLOW COMPONENTS IN CM/DAY 
+    do k=xlayers-1,2,-1; do i=xrows-1,2,-1; do j=xcols-1,2,-1 
+!  QZ FOR SURFACE CELL 
+    if(idcell(i,j,k).ne.0.and.idcell(i,j,k+1).eq.0)then
+      QZ(I,J,K)=-EVIN(i,j)*86400.0 
 	  QX(i,j,k)=0.0 
 	  QY(i,j,k)=0.0 
-	  GO TO 420 
-	  ENDIF 
-! 
-!  	QZ FOR INTERNAL CELL 
-      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).NE.0)THEN 
-      QZ(I,J,K)=((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I,J,K-1))/DELTAZ(K)))*86400.0 
-      ENDIF 
-! 
-!   QZ FOR BOTTOM CELL	 
-      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)THEN 
-      QZ(I,J,K)=((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K+1)-H(I,J,K))/DELTAZ(K)))*86400.0 
-      ENDIF 
-! 
-!   QX AND QY FOR INTERNAL CELL	OR EAST (RIGHT) BOUNDARY OR NORTH (TOP) BOUNDARY 
-      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).GT.0.AND.IDCELL(I,J-1,K).GT.0)THEN	 
-      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J,K)-H(I,J-1,K))/DX)*86400.0 
-      QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I-1,J,K))/DY))*86400.0 
-	  ENDIF 
-! 
-!   QX FOR CELL ADJACENT TO FIXED HEAD 
-	  IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I,J+1,K).LT.0)THEN 
-      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0 									  
-      ENDIF 
-! 
-!   QY FOR CELL ADJACENT TO FIXED HEAD 
-	  IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I+1,J,K).LT.0)THEN  
-      QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0 
-	  ENDIF 
-! 
-!     QX FOR WEST (LEFT) BOUNDARY 
-      IF(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J-1,K).EQ.0)THEN 
-      QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0 
-      ENDIF 
-! 
-!     QY FOR SOUTH (LOWER) BOUNDARY  
-      IF (IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).EQ.0)THEN 
-	  QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0 
-      ENDIF 
-! 
-  420 CONTINUE 
-  410 CONTINUE    	 
-  400 CONTINUE   
-!      ENDIF 
+    else
+!  QZ FOR INTERNAL CELL 
+        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).NE.0)QZ(I,J,K) =                      &
+        &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I,J,K-1))/DELTAZ(K)))*86400.0
+!  QZ FOR BOTTOM CELL	 
+        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)QZ(I,J,K) =                      &
+        &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K+1)-H(I,J,K))/DELTAZ(K)))*86400.0
+!  QX AND QY FOR INTERNAL CELL	OR EAST (RIGHT) BOUNDARY OR NORTH (TOP) BOUNDARY 
+        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).GT.0.AND.IDCELL(I,J-1,K).GT.0)then
+            QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J,K)-H(I,J-1,K))/DX)*86400.0 
+            QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I-1,J,K))/DY))*86400.0
+        endif 
+!  QX FOR CELL ADJACENT TO FIXED HEAD 
+        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I,J+1,K).LT.0)QX(I,J,K) =                     &
+        &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
+!  QY FOR CELL ADJACENT TO FIXED HEAD 
+        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I+1,J,K).LT.0)QY(I,J,K) =                     &
+        &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
+!  QX FOR WEST (LEFT) BOUNDARY 
+        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J-1,K).EQ.0)QX(I,J,K) =                      &
+        &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
+!  QY FOR SOUTH (LOWER) BOUNDARY  
+        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).EQ.0)QY(I,J,K) =                     &
+        &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
+    end if
+    end do; end do; end do
+
+802 write(6,*)"fail =",fail
+        DELTAT1 = DT
+    write(6,3)TEXTRA,ITER
+3    format(//,10X,'EXTRA COMPUTATION STEP ',I5,/,10X,'NUMBER OF ITERATIONS ',I5)
+
+800 CONTINUE
+        ICONVIT=-ITER
+    
+    deallocate (perm1,perm2,perm3,perm4,perm5,perm6,PSIOLDI,PSIPOLD)    
+    RETURN
+
+2000    FAIL=FAIL+1
+    if(FAIL.EQ.2.AND.TEXTRA.EQ.NEXTRA)GO TO 333
+        DT = DELTAT9/NEXTRA
+        DELTAT1 = DELTAT9
+    write(6,*)"FAIL=",FAIL,DT,EPSI,DELTAT1
+    
+    GO TO 801
+    
+333  write(6,5)
+5    format(/,10X,'CONVERGENCE CANNOT BE ACHIEVED',/)
 ! 
 	deallocate (perm1,perm2,perm3,perm4,perm5,perm6,PSIOLDI,PSIPOLD)
 
@@ -1498,7 +1662,7 @@
 	  real,allocatable,dimension(:,:) :: wt
 	  integer,allocatable,dimension(:,:) :: lseep
          
-	  allocate (wt(ri,ci),lseep(ri,ci))
+	  allocate (wt(xrows,xcols),lseep(xrows,xcols))
 	  
 ! 
 	  OPEN(UNIT=40,FILE='OUTHEADS_H.DAT',STATUS='UNKNOWN') 
@@ -1511,28 +1675,28 @@
 	  OPEN(UNIT=47,FILE='VECTORS_H.TXT',STATUS='UNKNOWN') 
 	  OPEN(UNIT=48,FILE='SEEPS.DAT',STATUS='UNKNOWN')  
 ! 
-    1 FORMAT(<ncolin>F7.2) 
+    1 FORMAT(<NCOLS>F7.2) 
     2 FORMAT (3F18.9,E13.7) 
     3 FORMAT (3I5,3F18.6) 
-    4 FORMAT(<ci>F7.2) 
-	5 FORMAT(<ncolin>F8.3)
-	6 FORMAT(<ncolin>I2)
+    4 FORMAT(<NCOLS>F7.2) 
+	5 FORMAT(<NCOLS>F8.3)
+	6 FORMAT(<NCOLS>I2)
 ! 
       WRITE (6,*) "PPRINT ITIME", ITIME 
       
       IF(SSOPT.EQ.1.0)THEN		 
-      DO 123 K=2,NLAYER-1 
-      WRITE(44,1)(((H(I,J,K)/100.0),J=2,NCOLUMN-1),I=2,NROW-1) 
+      DO 123 K=2,xlayers-1 
+      WRITE(44,1)(((H(I,J,K)/100.0),J=2,xcols-1),I=2,xrows-1) 
   123 CONTINUE  
-      DO 111 K=2,NLAYER-1 
-      WRITE(41,1)(((PSI(I,J,K)/100.0),J=2,NCOLUMN-1),I=2,NROW-1) 
+      DO 111 K=2,xlayers-1 
+      WRITE(41,1)(((PSI(I,J,K)/100.0),J=2,xcols-1),I=2,xrows-1) 
   111 CONTINUE 
       ELSE 
-      DO 115 K=2,NLAYER-1 
-      WRITE(40,1)(((H(I,J,K)/100.0),J=2,NCOLUMN-1),I=2,NROW-1) 
+      DO 115 K=2,xlayers-1 
+      WRITE(40,1)(((H(I,J,K)/100.0),J=2,xcols-1),I=2,xrows-1) 
   115 CONTINUE  
-      DO 116 K=2,NLAYER-1 
-      WRITE(41,5)(((PSI(I,J,K)/10.0),J=2,NCOLUMN-1),I=2,NROW-1) 
+      DO 116 K=2,xlayers-1 
+      WRITE(41,5)(((PSI(I,J,K)/10.0),J=2,xcols-1),I=2,xrows-1) 
   116 CONTINUE 
       ENDIF 
       
@@ -1541,11 +1705,11 @@
 ! 
 	  WT=0.0 
 	  LSEEP=0
-	  rows: do I=startrow,endrow 
-	  cols: do J=startcol,endcol
+	  rows: do I=s_row,e_row 
+	  cols: do J=s_col,e_col
 	  IF(KTOP(I,J).NE.0)THEN 
 	  KT=KTOP(I,J) 
-	  DO 121 K=1,NLAYER-1 
+	  DO 121 K=1,xlayers-1 
 	  IF(PSI(I,J,K).EQ.0.1)THEN
 	  LSEEP(I,J)=1
 	  ENDIF 
@@ -1560,14 +1724,14 @@
 	  ENDIF 
       end do cols
       end do rows
-      WRITE(42,1)((WT(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
-	  WRITE(48,6)((LSEEP(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
+      WRITE(42,1)((WT(I,J),J=2,xcols-1),I=2,xrows-1) 
+	  WRITE(48,6)((LSEEP(I,J),J=2,xcols-1),I=2,xrows-1) 
 !       
   200 CONTINUE 
 ! 
-	  DO 210 I=2,NROW-1 
-	  DO 220 J=2,NCOLUMN-1 
-      DO 230 K=2,NLAYER-1 
+	  DO 210 I=2,xrows-1 
+	  DO 220 J=2,xcols-1 
+      DO 230 K=2,xlayers-1 
 	  IF(IDCELL(I,J,K).EQ.0)GO TO 230 
       IF(IDCELL(I+1,J,K).NE.0.AND.IDCELL(I-1,J,K).NE.0.AND.IDCELL(I,J+1,K).NE.0.AND.IDCELL(I,J-1,K).NE.0)THEN	 
 	  WRITE(47,3) I,J,K,QX(I,J,K),QY(I,J,K),QZ(I,J,K) 
@@ -1596,28 +1760,32 @@
 ! 
 !	  DIMENSION WT(610,461),LSEEP(610,461) 
 	  real,allocatable,dimension(:,:) :: wt
-      character*15 watertable
+	  integer,allocatable,dimension(:,:) :: kwt
+	  integer,allocatable,dimension(:,:) :: lseep
+      
+      character*15 watertable,vector,seeps
+      character*25 vectors_top
       character*3 count
       character*4 extension
-         
-	  allocate (wt(ri,ci))
-	  
+      integer KL,KU
+               
+	  allocate (wt(xrows,xcols),kwt(xrows,xcols),lseep(xrows,xcols))
 ! 
 	  OPEN(UNIT=140,FILE='OUTHEADS_MID.DAT',STATUS='REPLACE') 
 !	  OPEN(UNIT=42,FILE='WT_H.TXT',STATUS='UNKNOWN')	   
 ! 
-    1 FORMAT(<ncolin>F7.2) 
+    1 FORMAT(<NCOLS>F7.2) 
     2 FORMAT (3F18.9,E13.7) 
     3 FORMAT (3I5,3F18.6) 
-    4 FORMAT(<ci>F7.2) 
-	5 FORMAT(<ncolin>F8.3)
-	6 FORMAT(<ncolin>I2)
+    4 FORMAT(<NCOLS>F7.2) 
+	5 FORMAT(<NCOLS>F8.3)
+	6 FORMAT(<NCOLS>I2)
 ! 
-      WRITE (6,*) "PPRINT ITIME", ITIME 
+      WRITE (6,*) "MIDPRINT ITIME", ITIME 
       
       extension = ".txt"
-     
-      
+      kwt=0
+                 
       if(itime.lt.10)then
       write(count, '(I1)')itime
       else if(itime.ge.10.and.itime.lt.100)then
@@ -1628,43 +1796,93 @@
       
       count = trim(count)
       
-      watertable = 'wt_h_'//count//extension
-      watertable = trim(watertable)
+      watertable = 'wt_h_'//count
+      watertable = trim(watertable)//extension
       OPEN(UNIT=42,FILE=watertable,STATUS='UNKNOWN')	
+      
+      vector = 'vector_'//count
+      vector = trim(vector)//extension
+      OPEN(UNIT=43,FILE=vector,STATUS='UNKNOWN')
+      
+      seeps = 'seeps_'//count
+      seeps = trim(seeps)//extension
+      OPEN(UNIT=44,FILE=seeps,STATUS='UNKNOWN')  
+      
+      vectors_top = 'vector_top_'//count
+      vectors_top = trim(vectors_top)//extension
+      OPEN(UNIT=45,FILE=vectors_top,STATUS='UNKNOWN') 
+      
 ! 
 !  FIND THE WATER TABLE AT EACH PRISM AND PRINT TO FILES 
 ! 
 	  WT=0.0 
-	  midrows: do I=startrow,endrow 
-	  midcols: do J=startcol,endcol
+	  LSEEP=0
+	  midrows: do I=s_row,e_row 
+	  midcols: do J=s_col,e_col
 	  IF(KTOP(I,J).NE.0)THEN 
 	  KT=KTOP(I,J) 
-	  DO 121 K=1,NLAYER-1 
+	  DO 122 K=1,xlayers-1 
 	  IF(PSI(I,J,K).EQ.0.1)THEN
+	  LSEEP(I,J)=1
 	  ENDIF 
 	  IF(PSI(I,J,K).GE.0.0.AND.PSI(I,J,K+1).LT.0.0)THEN 
       WT(I,J)=H(I,J,K)/100.0 
+      KWT(I,J)=K-2
       cycle midcols
 	  ENDIF 
-  121 CONTINUE 
+  122 CONTINUE 
       IF(WT(I,J).EQ.0.0)THEN 
 	  WT(I,J)=H(I,J,KT)/100.0 
 	  ENDIF 
 	  ENDIF 
       end do midcols
       end do midrows
-      WRITE(42,1)((WT(I,J),J=2,NCOLUMN-1),I=2,NROW-1) 
+      WRITE(42,1)((WT(I,J),J=2,xcols-1),I=2,xrows-1) 
+      WRITE(44,6)((LSEEP(I,J),J=2,xcols-1),I=2,xrows-1) 
 !       
   
-      DO K=2,NLAYER-1 
-      WRITE(140,1)(((H(I,J,K)/100.0),J=2,NCOLUMN-1),I=2,NROW-1) 
+      DO K=2,xlayers-1 
+      WRITE(140,1)(((H(I,J,K)/100.0),J=2,xcols-1),I=2,xrows-1) 
       end do
      
-      CLOSE(UNIT=42,status='keep')   
+      CLOSE(UNIT=42,status='keep') 
+      CLOSE(UNIT=44,status='keep')     
       close(unit=140,status='keep')
 ! 
-  
+      DO 211 I=2,xrows-1 
+	  DO 221 J=2,xcols-1 
+      IF(KWT(I,J).NE.0)THEN 
+      KL=KWT(I,J)
+      KU=KWT(I,J)+4
+      DO 231 K=KL,KU 
+	  IF(IDCELL(I,J,K).EQ.0)GO TO 231 
+      IF(IDCELL(I+1,J,K).NE.0.AND.IDCELL(I-1,J,K).NE.0.AND.IDCELL(I,J+1,K).NE.0.AND.IDCELL(I,J-1,K).NE.0)THEN	 
+	  WRITE(45,3) I,J,K,QX(I,J,K),QY(I,J,K),QZ(I,J,K) 
+	  end if 
+  231 CONTINUE 
+      end if
+  221 CONTINUE 
+  211 CONTINUE	
+
+      if(itime.eq.7.or.itime.eq.10.or.itime.eq.15.or.itime.eq.20.or.itime.eq.25)then
+  	  DO 210 I=2,xrows-1 
+	  DO 220 J=2,xcols-1 
+      DO 230 K=2,xlayers-1 
+	  IF(IDCELL(I,J,K).EQ.0)GO TO 230 
+      IF(IDCELL(I+1,J,K).NE.0.AND.IDCELL(I-1,J,K).NE.0.AND.IDCELL(I,J+1,K).NE.0.AND.IDCELL(I,J-1,K).NE.0)THEN	 
+	  WRITE(43,3) I,J,K,QX(I,J,K),QY(I,J,K),QZ(I,J,K) 
+	  end if 
+  230 CONTINUE 
+  220 CONTINUE 
+  210 CONTINUE	
+      end if 	
+      
+      CLOSE(UNIT=43,status='keep')  
+      CLOSE(UNIT=45,status='keep')  
+    
   deallocate (wt) 
+  deallocate (kwt)
+  deallocate (lseep)
 	  
 	  RETURN 
       END 
