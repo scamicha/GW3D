@@ -210,7 +210,7 @@
 !
 !     OPEN(UNIT=51,FILE='..\input\INF_CM_Jan2011.DAT',STATUS='OLD')
 !     OPEN(UNIT=51,FILE='..\..\input\INF_CM_Mar2011_shortrun.DAT',STATUS='OLD')  
-      OPEN(UNIT=51,FILE='..\..\input\#SFLUX_Huntertown_30days_2003.txt',STATUS='OLD')  !!! block of distributed surface flux, day 1 at top
+      OPEN(UNIT=51,FILE='./DATA/#SFLUX_Huntertown_30days_2003.txt',STATUS='OLD')  !!! block of distributed surface flux, day 1 at top
 !	  READ(51,*)(IZT(ITIME),ITIME=1,NTIMEIN) 
 
       do itime=1,NTIMEIN
@@ -402,7 +402,7 @@
 !!      COMMON/G7/ COND(610,461,123) 
 ! 
 ! 
-    OPEN(UNIT=28,FILE='..\..\input\streamelev_elev_m_absvalue.txt',STATUS='old')
+    OPEN(UNIT=28,FILE='./DATA/streamelev_elev_m_absvalue.txt',STATUS='old')
 !    OPEN(UNIT=28,FILE='..\..\input\ht_strmel2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=28,FILE='..\..\input\ht_net2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=29,FILE='..\input\ht_net2k_2009may5.txt',STATUS='old') 
@@ -410,11 +410,11 @@
 !	OPEN(UNIT=29,FILE='..\..\input\ht_domain_id.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
 	OPEN(UNIT=31,FILE='IDMATRIX.TXT',STATUS='UNKNOWN') 
     OPEN(UNIT=32,FILE='ELEVDIF.DAT',STATUS='UNKNOWN') 
-	OPEN(UNIT=35,FILE='..\..\input\Ht6_conductivitiesLagroDetail_2011Sept2.txt',STATUS='old') 
+	OPEN(UNIT=35,FILE='./DATA/Ht6_conductivitiesLagroDetail_2011Sept2.txt',STATUS='old') 
 	OPEN(UNIT=36,FILE='IDGROUND.DAT',STATUS='UNKNOWN') 
     OPEN(UNIT=37,FILE='ELEVATIONS_M.DAT',STATUS='UNKNOWN') 
 	OPEN(UNIT=39,FILE='ID_CHECK.DAT',STATUS='UNKNOWN') 
-	OPEN(UNIT=135,FILE='..\..\input\ht_soilhydgrp.asc',STATUS='UNKNOWN')
+	OPEN(UNIT=135,FILE='./DATA/ht_soilhydgrp.asc',STATUS='UNKNOWN')
  !
 ! 
 !  SET INPUT FORMATS 
@@ -620,7 +620,7 @@
 ! 
       IF(INCODE.EQ.1)THEN 
 ! 	  OPEN(UNIT=38, FILE='..\..\input\SSOUT_H_25aug2011.DAT', STATUS='OLD') 
- 	  OPEN(UNIT=38, FILE='..\..\input\OUTHEADS_MID.DAT',STATUS='OLD')   !mid-start
+ 	  OPEN(UNIT=38, FILE='./DATA/OUTHEADS_MID.DAT',STATUS='OLD')   !mid-start
       DO 200 K=2,xlayers-1 
       READ(38,4)((HIN(I,J,K),J=2,xcols-1),I=2,xrows-1) 
   200 CONTINUE 
