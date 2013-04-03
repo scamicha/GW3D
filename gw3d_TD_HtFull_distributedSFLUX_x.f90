@@ -406,7 +406,7 @@
 !    OPEN(UNIT=28,FILE='..\..\input\ht_strmel2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=28,FILE='..\..\input\ht_net2k_2009may5.txt',STATUS='old') 
 !   OPEN(UNIT=29,FILE='..\input\ht_net2k_2009may5.txt',STATUS='old') 
-    OPEN(UNIT=29,FILE='..\..\input\ht_domain_id_elev_m.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
+    OPEN(UNIT=29,FILE='./DATA/ht_domain_id_elev_m.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
 !	OPEN(UNIT=29,FILE='..\..\input\ht_domain_id.txt',STATUS='old')       ! 0 = outside subdomain, 1 = inside subdomain, 3 = stream cell
 	OPEN(UNIT=31,FILE='IDMATRIX.TXT',STATUS='UNKNOWN') 
     OPEN(UNIT=32,FILE='ELEVDIF.DAT',STATUS='UNKNOWN') 
