@@ -54,7 +54,6 @@ module data_store
 !     real,parameter :: Z0=210
   real,parameter :: Z0=208
   real,parameter :: H0=228-10           !! lowest expected saturation elevation
-	  
 !	   
 !  CONVERT GRID SPACING AND Z0 FROM M TO CM 
 ! 
