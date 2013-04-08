@@ -1573,22 +1573,22 @@ SUBROUTINE READIN(INCODE)
   deallocate (perm1,perm2,perm3,perm4,perm5,perm6,PSIOLDI,PSIPOLD)    
   RETURN
 
-2000 FAIL=FAIL+1
-  if(FAIL.EQ.2.AND.TEXTRA.EQ.NEXTRA)GO TO 333
-  DT = DELTAT9/NEXTRA
-  DELTAT1 = DELTAT9
-  write(6,*)"FAIL=",FAIL,DT,EPSI,DELTAT1
+! 2000 FAIL=FAIL+1
+!   if(FAIL.EQ.2.AND.TEXTRA.EQ.NEXTRA)GO TO 333
+!   DT = DELTAT9/NEXTRA
+!   DELTAT1 = DELTAT9
+!   write(6,*)"FAIL=",FAIL,DT,EPSI,DELTAT1
   
-  GO TO 801
+!   GO TO 801
     
-333 write(6,5)
-5 format(/,10X,'CONVERGENCE CANNOT BE ACHIEVED',/)
-! 
-  deallocate (perm1,perm2,perm3,perm4,perm5,perm6,PSIOLDI,PSIPOLD)
+! 333 write(6,5)
+! 5 format(/,10X,'CONVERGENCE CANNOT BE ACHIEVED',/)
+! ! 
+!   deallocate (perm1,perm2,perm3,perm4,perm5,perm6,PSIOLDI,PSIPOLD)
 
-!  RETURN TO MAIN PROGRAM 
-! 
-  RETURN 
+! !  RETURN TO MAIN PROGRAM 
+! ! 
+!   RETURN 
 END SUBROUTINE ITERATE
 ! 
 ! 
