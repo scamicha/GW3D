@@ -675,9 +675,9 @@ SUBROUTINE READIN(INCODE)
 !
     ELEV=0.0 
     ELEVM=0.0 
-    DO 310 I=s_row,e_row 
-       DO 310 J=s_col,e_col 
-          DO 320 K=2,xlayers 
+    DO I=s_row,e_row 
+       DO J=s_col,e_col 
+          DO K=2,xlayers 
              IF(IDCELL(I,J,K).NE.0)THEN 
                 PSIIN(I,J,K)=HIN(I,J,K)-Z(K) 
              ENDIF
@@ -844,11 +844,13 @@ SUBROUTINE READIN(INCODE)
                      IDCELL(I,J,K)=-7 
                      
                   else if(IDCELL(I,J,K).ge.0.and.k.ge.ktop(i,j)-6)then
-                     !fractured till, if in upper till 6 or less layers/meters (layering 
-                     IDCELL(I,J,K)=7  begins at the bottom)
+                     !fractured till, if in upper till 6 or less layers/meters 
+                     !(layering begins at the bottom)
+                     IDCELL(I,J,K)=7 
                   else if(IDCELL(I,J,K).LT.0.and.k.lt.ktop(i,j)-6)then 
                      !unfractured "regular" till, if in upper till more than 6 layers/meters 
-                     IDCELL(I,J,K)=-8 (layering begins at the bottom)
+                     !(layering begins at the bottom)
+                     IDCELL(I,J,K)=-8
                   else if(IDCELL(I,J,K).ge.0.and.k.lt.ktop(i,j)-6)then
                      !unfractured "regular" till, if in upper till more than 6 layers/meters
                      !(layering begins at the bottom)
@@ -1425,17 +1427,21 @@ SUBROUTINE READIN(INCODE)
 !  if so, consider decreasing time-step.  
 !  psitdif and psitdifmax will be used to track this.
    psitdifmax = 0.0
-   do i=2,xrows-1; do j=2,xcols-1; do k=2,xlayers-1 
-      psitdif = abs(PSI(I,J,K) - PSIOLD(I,J,K))
-      if(psitdif > psitdifmax)then
-         psitdifmax = psitdif; ibadt = i; jbadt = j; kbadt = k
-      end if
-      if(IDCELL(I,J,K).NE.0)then 
-         H(I,J,K) = Z(K) + PSI(I,J,K) 
-         PSIOLD2(I,J,K) = PSIOLD(I,J,K) 
-         PSIOLD(I,J,K) = PSI(I,J,K) 
-      endif
-   end do
+   DO i=2,xrows-1
+      DO j=2,xcols-1
+         DO k=2,xlayers-1 
+            psitdif = abs(PSI(I,J,K) - PSIOLD(I,J,K))
+            if(psitdif > psitdifmax)then
+               psitdifmax = psitdif; ibadt = i; jbadt = j; kbadt = k
+            end if
+            if(IDCELL(I,J,K).NE.0)then 
+               H(I,J,K) = Z(K) + PSI(I,J,K) 
+               PSIOLD2(I,J,K) = PSIOLD(I,J,K) 
+               PSIOLD(I,J,K) = PSI(I,J,K) 
+            endif
+         ENDDO
+      ENDDO
+   ENDDO
     
    write(6,7)PSIOLD2(ibadt,jbadt,kbadt),PSI(ibadt,jbadt,kbadt),psitdifmax,(ibadt-1),   &
         &     (jbadt-1),(kbadt-1)
@@ -1519,38 +1525,42 @@ SUBROUTINE READIN(INCODE)
 !!      ENDIF 
 
 !  CALCULATE FLOW COMPONENTS IN CM/DAY 
-   do k=xlayers-1,2,-1; do i=xrows-1,2,-1; do j=xcols-1,2,-1 
+   DO k=xlayers-1,2,-1
+      DO i=xrows-1,2,-1
+         DO j=xcols-1,2,-1 
 !  QZ FOR SURFACE CELL 
-      if(idcell(i,j,k).ne.0.and.idcell(i,j,k+1).eq.0)then
-         QZ(I,J,K)=-EVIN(i,j)*86400.0 
-         QX(i,j,k)=0.0 
-         QY(i,j,k)=0.0 
-      else
+            if(idcell(i,j,k).ne.0.and.idcell(i,j,k+1).eq.0)then
+               QZ(I,J,K)=-EVIN(i,j)*86400.0 
+               QX(i,j,k)=0.0 
+               QY(i,j,k)=0.0 
+            else
 !  QZ FOR INTERNAL CELL 
-        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).NE.0)QZ(I,J,K) =                      &
-        &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I,J,K-1))/DELTAZ(K)))*86400.0
+               if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).NE.0)QZ(I,J,K) =                      &
+                    &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I,J,K-1))/DELTAZ(K)))*86400.0
 !  QZ FOR BOTTOM CELL	 
-        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)QZ(I,J,K) =                      &
-        &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K+1)-H(I,J,K))/DELTAZ(K)))*86400.0
+               if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J,K-1).EQ.0)QZ(I,J,K) =                      &
+                    &            ((-PERM5(I,J,K)*GAMMA/MU)*((H(I,J,K+1)-H(I,J,K))/DELTAZ(K)))*86400.0
 !  QX AND QY FOR INTERNAL CELL	OR EAST (RIGHT) BOUNDARY OR NORTH (TOP) BOUNDARY 
-        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).GT.0.AND.IDCELL(I,J-1,K).GT.0)then
-           QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J,K)-H(I,J-1,K))/DX)*86400.0 
-           QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I-1,J,K))/DY))*86400.0
-        endif
+               if(IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).GT.0.AND.IDCELL(I,J-1,K).GT.0)then
+                  QX(I,J,K)=((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J,K)-H(I,J-1,K))/DX)*86400.0 
+                  QY(I,J,K)=((PERM4(I,J,K)*GAMMA/MU)*((H(I,J,K)-H(I-1,J,K))/DY))*86400.0
+               endif
 !  QX FOR CELL ADJACENT TO FIXED HEAD 
-        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I,J+1,K).LT.0)QX(I,J,K) =                     &
-             &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
+               if (IDCELL(I,J,K).NE.0.AND.IDCELL(I,J+1,K).LT.0)QX(I,J,K) =                     &
+                    &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
 !  QY FOR CELL ADJACENT TO FIXED HEAD 
-        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I+1,J,K).LT.0)QY(I,J,K) =                     &
-        &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
+               if (IDCELL(I,J,K).NE.0.AND.IDCELL(I+1,J,K).LT.0)QY(I,J,K) =                     &
+                    &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
 !  QX FOR WEST (LEFT) BOUNDARY 
-        if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J-1,K).EQ.0)QX(I,J,K) =                      &
-             &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
+               if(IDCELL(I,J,K).NE.0.AND.IDCELL(I,J-1,K).EQ.0)QX(I,J,K) =                      &
+                    &                     ((-PERM1(I,J,K)*GAMMA/MU)*(H(I,J+1,K)-H(I,J,K))/DX)*86400.0
 !  QY FOR SOUTH (LOWER) BOUNDARY  
-        if (IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).EQ.0)QY(I,J,K) =                     &
-             &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
-     end if
-  end do
+               if (IDCELL(I,J,K).NE.0.AND.IDCELL(I-1,J,K).EQ.0)QY(I,J,K) =                     &
+                    &                    ((PERM4(I,J,K)*GAMMA/MU)*((H(I+1,J,K)-H(I,J,K))/DY))*86400.0
+            end if
+         ENDDO
+      ENDDO
+   ENDDO
 
 802 write(6,*)"fail =",fail
   DELTAT1 = DT
@@ -1886,8 +1896,8 @@ SUBROUTINE PPRINT(SSOPT,ITIME)
    ENDDO
 
    if(itime.eq.7.or.itime.eq.10.or.itime.eq.15.or.itime.eq.20.or.itime.eq.25)then
-      DO 210 I=2,xrows-1 
-         DO 220 J=2,xcols-1 
+      DO I=2,xrows-1 
+         DO J=2,xcols-1 
             DO K=2,xlayers-1 
                IF(IDCELL(I,J,K).EQ.0)CYCLE
                IF(IDCELL(I+1,J,K).NE.0.AND.IDCELL(I-1,J,K).NE.0.AND.  &
