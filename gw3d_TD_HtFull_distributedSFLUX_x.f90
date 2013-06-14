@@ -1061,7 +1061,7 @@ SUBROUTINE READIN(INCODE)
 ! 
 !     IF(IDCELL(I,J,K).GT.0.AND.IDCELL(I,J,K).LT.96)THEN 
             IF(IDCELL(I,J,K).LE.0)CYCLE
-            KKNT=KKNT+1 
+!            KKNT=KKNT+1 
 ! 
 !  COMPUTE PSIPRED VALUES BASED ON EQ'S 11 - 13; FREEZE(1971) 
 ! 
@@ -1209,15 +1209,15 @@ SUBROUTINE READIN(INCODE)
 !  COMPUTE COMPONENTS OF D 
 ! 
 ! 
-            DT1=(G*(RHO0**2)*PERM(1)/(MU*DX*(DX+DX)))*(PSI(I,J+1,K)+PSIOLD(I,J+1,K)-PSIOLD(I,J,K)) 
-            DT2=(G*(RHO0**2)*PERM(2)/(MU*DX*(DX+DX)))*(PSIOLD(I,J,K)-PSI(I,J-1,K)-PSIOLD(I,J-1,K)) 
-            DT3=(G*(RHO0**2)*PERM(3)/(MU*DY*(DY+DY)))*(PSI(I+1,J,K)+PSIOLD(I+1,J,K)-PSIOLD(I,J,K)) 
-            DT4=(G*(RHO0**2)*PERM(4)/(MU*DY*(DY+DY)))*(PSIOLD(I,J,K)-PSI(I-1,J,K)-PSIOLD(I-1,J,K)) 
-            DT5=(G*(RHO0**2)*PERM(5)/(MU*DELTAZ(K)))*(1.0+(1.0/(DELTAZ(K)+DELTAZ(K+1)))  &
-                 *(PSIOLD(I,J,K+1)-PSIOLD(I,J,K))) 
-            DT6=(G*(RHO0**2)*PERM(6)/(MU*DELTAZ(K)))*(1.0+(1.0/(DELTAZ(K)+DELTAZ(K-1)))  &
-                 *(PSIOLD(I,J,K)-PSIOLD(I,J,K-1))) 
-            DT7=((RHO0*THETA7/POROS7)*(ALPHAP+POROS7*BETAP)+(RHO0*CPSI7))*(PSIOLD(I,J,K)/DT) 
+          DT1=(G*(RHO0**2)*PERM(1)/(MU*DX*(DX+DX)))*(PSI(I,J+1,K)+PSIOLD(I,J+1,K)-PSIOLD(I,J,K)) 
+          DT2=(G*(RHO**2)*PERM(2)/(MU*DX*(DX+DX)))*(PSIOLD(I,J,K)-PSI(I,J-1,K)-PSIOLD(I,J-1,K)) 
+          DT3=(G*(RHO0**2)*PERM(3)/(MU*DY*(DY+DY)))*(PSI(I+1,J,K)+PSIOLD(I+1,J,K)-PSIOLD(I,J,K)) 
+          DT4=(G*(RHO0**2)*PERM(4)/(MU*DY*(DY+DY)))*(PSIOLD(I,J,K)-PSI(I-1,J,K)-PSIOLD(I-1,J,K)) 
+          DT5=(G*(RHO0**2)*PERM(5)/(MU*DELTAZ(K)))*(1.0+(1.0/(DELTAZ(K)+DELTAZ(K+1)))  &
+               *(PSIOLD(I,J,K+1)-PSIOLD(I,J,K))) 
+          DT6=(G*(RHO0**2)*PERM(6)/(MU*DELTAZ(K)))*(1.0+(1.0/(DELTAZ(K)+DELTAZ(K-1)))  &
+               *(PSIOLD(I,J,K)-PSIOLD(I,J,K-1))) 
+          DT7=((RHO0*THETA7/POROS7)*(ALPHAP+POROS7*BETAP)+(RHO0*CPSI7))*(PSIOLD(I,J,K)/DT) 
 ! 
 ! 
 !  IMPOSE BOUNDARY CONDITIONS BY REPLACING APPROPRIATE SUBTERMS 
@@ -1225,134 +1225,134 @@ SUBROUTINE READIN(INCODE)
 ! 
 !     TOP BOUNDARY 
 !		  
-            IF(IDCELL(I,J,K+1).EQ.0)THEN 
-               A=0.0 
-               BT5=0.0 
-               IF (EVIN(i,j).GT.COND(I,J,K)) THEN 
-                  SFLUX=COND(I,J,K) 
-               ELSE 
-                  SFLUX=EVIN(i,j) 
-               ENDIF
-               DT5=RHO0*SFLUX/DELTAZ(K) 
-            ENDIF
+          IF(IDCELL(I,J,K+1).EQ.0)THEN 
+             A=0.0 
+             BT5=0.0 
+             IF (EVIN(i,j).GT.COND(I,J,K)) THEN 
+                SFLUX=COND(I,J,K) 
+             ELSE 
+                SFLUX=EVIN(i,j) 
+             ENDIF
+             DT5=RHO0*SFLUX/DELTAZ(K) 
+          ENDIF
 ! 
 !     BOTTOM BOUNDARY 
 ! 
-            IF(IDCELL(I,J,K-1).EQ.0)THEN 
-               C=0.0 
-               BT6=0.0 
-               DT6=RHO0*IZB/DELTAZ(K) 
-            ENDIF
+          IF(IDCELL(I,J,K-1).EQ.0)THEN 
+             C=0.0 
+             BT6=0.0 
+             DT6=RHO0*IZB/DELTAZ(K) 
+          ENDIF
 ! 
 !     NORTH (UPPER GRID) BOUNDARY 
 ! 
-            IF(IDCELL(I-1,J,K).EQ.0)THEN 
-               BT4=0.0 
-               DT4=RHO0*IYN(K)/DY 
-            ENDIF
+          IF(IDCELL(I-1,J,K).EQ.0)THEN 
+             BT4=0.0 
+             DT4=RHO0*IYN(K)/DY 
+          ENDIF
 ! 
 !     SOUTH (LOWER GRID) BOUNDARY 
 ! 
-            IF(IDCELL(I+1,J,K).EQ.0)THEN 
-               BT3=0.0 
-               DT3=RHO0*IYS(K)/DY 
-            ENDIF
+          IF(IDCELL(I+1,J,K).EQ.0)THEN 
+             BT3=0.0 
+             DT3=RHO0*IYS(K)/DY 
+          ENDIF
 ! 
 !     WEST (LEFT GRID) BOUNDARY 
 ! 
-            IF(IDCELL(I,J-1,K).EQ.0)THEN 
-               BT2=0.0 
-               DT2=RHO0*IXW(K)/DX 
-            ENDIF
+          IF(IDCELL(I,J-1,K).EQ.0)THEN 
+             BT2=0.0 
+             DT2=RHO0*IXW(K)/DX 
+          ENDIF
 ! 
 !     EAST (RIGHT GRID) BOUNDARY 
 ! 
-            IF(IDCELL(I,J+1,K).EQ.0)THEN 
-               BT1=0.0 
-               DT1=RHO0*IXE(K)/DX 
-            ENDIF
+          IF(IDCELL(I,J+1,K).EQ.0)THEN 
+             BT1=0.0 
+             DT1=RHO0*IXE(K)/DX 
+          ENDIF
 ! 
 !  MAKE APPROPRIATE CORRECTIONS FOR STEADY-STATE SIMULATION 
 !         AND CALCULATE B 
 ! 
-            B2=(G/MU)*(BT1+BT2+BT3+BT4+BT5+BT6) 
+          B2=(G/MU)*(BT1+BT2+BT3+BT4+BT5+BT6) 
   
-            IF(SSOPT.EQ.1.0) THEN 
-               A=2.0*A 
-               B1=0.0 
-               B2=2.0*B2 
-               C=2.0*C 
-               DT1=2.0*DT1 
-               DT2=2.0*DT2 
-               DT3=2.0*DT3 
-               DT4=2.0*DT4 
-!	  DT5=0.0 
-!	  DT6=0.0 
-               DT7=0.0 
-            ENDIF
+          IF(SSOPT.EQ.1.0) THEN 
+             A=2.0*A 
+             B1=0.0 
+             B2=2.0*B2 
+             C=2.0*C 
+             DT1=2.0*DT1 
+             DT2=2.0*DT2 
+             DT3=2.0*DT3 
+             DT4=2.0*DT4 
+!	     DT5=0.0 
+!	     DT6=0.0 
+             DT7=0.0 
+          ENDIF
 ! 
-            B=B1+B2 
-            D=DT1-DT2+DT3-DT4+DT5-DT6+DT7 
+          B=B1+B2 
+          D=DT1-DT2+DT3-DT4+DT5-DT6+DT7 
 ! 
 ! 
 !  SOLVE FOR NEW PSI VALUE BASED ON EQUATION 10 IN FREEZE, 1971 
 ! 
-            PSI(I,J,K)=(D+A*PSI(I,J,K+1)+C*PSI(I,J,K-1))/B 
+          PSI(I,J,K)=(D+A*PSI(I,J,K+1)+C*PSI(I,J,K-1))/B 
 ! 
 !  OVERRELAXATION OR UNDERRELAXATION ACCORDING TO VALUE OF OMEGA 
 ! 
-            PSI(I,J,K)=OMEGA*PSI(I,J,K)+(1.0-OMEGA)*PSIOLDI(I,J,K) 
-            if(psi(i,j,k).lt.-1000.0)psi(i,j,k)=-1000
+          PSI(I,J,K)=OMEGA*PSI(I,J,K)+(1.0-OMEGA)*PSIOLDI(I,J,K) 
+          if(psi(i,j,k).lt.-1000.0)psi(i,j,k)=-1000
 
 !  If you are at the surface and PSI is positive (ground fully saturated), set PSI = 0.1
-            IF(K.NE.KTOP(I,J))GO TO 155 
-            PSICHK=PSI(I,J,K)+Z(K) 
-            IF(PSICHK.GT.Z(K))THEN 
-               PSI(I,J,K)=0.1
-            ENDIF
+          IF(K.EQ.KTOP(I,J))THEN
+             PSICHK=PSI(I,J,K)+Z(K) 
+             IF(PSICHK.GT.Z(K))THEN 
+                PSI(I,J,K)=0.1
+             ENDIF
+          ENDIF
 ! 
 !  CHECK FOR DEVELOPMENT OF SEEPAGE FACES  
 ! 
-155         IF(PSI(I,J,K).LT.0.0.OR.K.EQ.KTOP(I,J))GO TO 225 
+          IF(PSI(I,J,K).LT.0.0.OR.K.EQ.KTOP(I,J))GO TO 225 
 !     CHECK EAST AND WAST SIDE FOR ZERO (EMPTY CELL) 
-            IF(IDCELL(I,J+1,K).EQ.0.OR.IDCELL(I,J-1,K).EQ.0)GO TO 221 
-            GO TO 222 
+          IF(IDCELL(I,J+1,K).EQ.0.OR.IDCELL(I,J-1,K).EQ.0)THEN
 !     VERIFY EMPTY EAST OR WEST CELL IS AIR AND NOT BOUNDARY 
-221         IF(KBOT(I,J+1).LT.K.AND.KTOP(I,J+1).LT.K.AND.KTOP(I,J+1).GT.0)& 
-                 &GO TO 224 
-            IF(KBOT(I,J-1).LT.K.AND.KTOP(I,J-1).LT.K.AND.KTOP(I,J-1).GT.0)& 
-                 &GO TO 224 
-            !     CHECK NORTH AND SOUTH SIDE FOR ZERO (EMPTY CELL) 
-222         IF(IDCELL(I+1,J,K).EQ.0.OR.IDCELL(I-1,J,K).EQ.0)GO TO 223 
-            GO TO 225 
-            !     VERIFY EMPTY NORTH OR SOUTH CELL IS AIR AND NOT BOUNDARY 
-223         IF(KBOT(I+1,J).LT.K.AND.KTOP(I+1,J).LT.K.AND.KTOP(I+1,J).GT.0)& 
-                 &GO TO 224  
-            IF(KBOT(I-1,J).LT.K.AND.KTOP(I-1,J).LT.K.AND.KTOP(I-1,J).GT.0)& 
-                 &GO TO 224 
-            GO TO 225 
-224         PSI(I,J,K)=0.1 
-            KSEEP=KSEEP+1 
-! 
-! 
+             IF((KBOT(I,J+1).LT.K.AND.KTOP(I,J+1).LT.K.AND.KTOP(I,J+1).GT.0).OR.  &
+                  (KBOT(I,J-1).LT.K.AND.KTOP(I,J-1).LT.K.AND.KTOP(I,J-1).GT.0))        & 
+                  GO TO 224 
+          ENDIF
+!     CHECK NORTH AND SOUTH SIDE FOR ZERO (EMPTY CELL) 
+          IF(IDCELL(I+1,J,K).EQ.0.OR.IDCELL(I-1,J,K).EQ.0)THEN
+!     VERIFY EMPTY NORTH OR SOUTH CELL IS AIR AND NOT BOUNDARY 
+             IF(KBOT(I+1,J).LT.K.AND.KTOP(I+1,J).LT.K.AND.KTOP(I+1,J).GT.0)& 
+                  &GO TO 224  
+             IF(KBOT(I-1,J).LT.K.AND.KTOP(I-1,J).LT.K.AND.KTOP(I-1,J).GT.0)& 
+                  &GO TO 224 
+          ENDIF
+          GO TO 225 
+224       PSI(I,J,K)=0.1 
+          KSEEP=KSEEP+1 
+ 
+ 
 !  UPDATE ITERATION DIFFERENCE AND SAVE PSIPRED FOR NEXT ITERATION 
 ! 
-225         DIFF=ABS(PSI(I,J,K)-PSIOLDI(I,J,K)) 
-            IF(DIFF.GT.DIFMAX) THEN 
-               DIFMAX=DIFF 
-               IBAD=I 
-               JBAD=J 
-               KBAD=K 
-            ENDIF
-            PSIPOLD(I,J,K)=PSIPRED(I,J,K) 
+225       DIFF=ABS(PSI(I,J,K)-PSIOLDI(I,J,K)) 
+          IF(DIFF.GT.DIFMAX) THEN 
+             DIFMAX=DIFF 
+             IBAD=I 
+             JBAD=J 
+             KBAD=K 
+          ENDIF
+          PSIPOLD(I,J,K)=PSIPRED(I,J,K) 
 ! 
 !  END OF MAIN ITERATION LOOP 
 ! 
 !      ENDIF    
 !      WRITE(6,*)PSI(I,J,K)   
-         ENDDO
-      ENDDO
-   ENDDO
+       ENDDO
+    ENDDO
+ ENDDO
 ! 
 ! 
 !  CHECK FOR CONVERGENCE THEN ITERATE OR CYCLE AS APPROPRIATE 
